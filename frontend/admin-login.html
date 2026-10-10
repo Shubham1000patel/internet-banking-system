@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Internet Banking</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .admin-login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: linear-gradient(135deg, #071a35, #123e70);
+        }
+
+        .admin-login-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 36px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+        }
+
+        .admin-brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .admin-brand h1 {
+            color: #123e70;
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        .admin-brand p {
+            color: #64748b;
+            margin: 0;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: #fff3d5;
+            color: #8a5b00;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .admin-login-card label {
+            display: block;
+            margin: 16px 0 7px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .admin-login-card input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .admin-login-card input:focus {
+            outline: 2px solid #c69b35;
+            border-color: #c69b35;
+        }
+
+        .admin-login-card button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #123e70;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .admin-login-card button:hover {
+            background: #0b2d52;
+        }
+
+        .admin-login-card button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        #adminLoginMessage {
+            margin-top: 16px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-back-link {
+            display: block;
+            margin-top: 22px;
+            text-align: center;
+            color: #123e70;
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+            .admin-login-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="admin-login-page">
+        <section class="admin-login-card">
+            <div class="admin-brand">
+                <span class="admin-badge">SECURE ADMIN ACCESS</span>
+                <h1>Admin Portal</h1>
+                <p>Internet Banking Management System</p>
+            </div>
+
+            <form id="adminLoginForm">
+                <label for="adminEmail">Admin Email</label>
+                <input
+                    type="email"
+                    id="adminEmail"
+                    name="email"
+                    placeholder="Enter admin email"
+                    autocomplete="username"
+                    required
+                >
+
+                <label for="adminPassword">Password</label>
+                <input
+                    type="password"
+                    id="adminPassword"
+                    name="password"
+                    placeholder="Enter admin password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit" id="adminLoginButton">
+                    Sign In to Admin Panel
+                </button>
+
+                <p id="adminLoginMessage" role="status" aria-live="polite"></p>
+            </form>
+
+            <a href="index.html" class="admin-back-link">
+                ← Back to Customer Login
+            </a>
+        </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/admin-login.js"></script>
+</body>
+</html>
+

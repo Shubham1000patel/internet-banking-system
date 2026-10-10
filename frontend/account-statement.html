@@ -1,0 +1,591 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Statement | MyBank</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* Account Statement Page Styling */
+        .statement-page {
+            margin: 0;
+            background: #f3f6fb;
+            color: #243247;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .statement-page * {
+            box-sizing: border-box;
+        }
+
+        .statement-page a {
+            text-decoration: none;
+        }
+
+        .statement-topbar {
+            padding: 9px 6%;
+            background: #082b55;
+            color: #fff;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .statement-header {
+            background: #fff;
+            padding: 22px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e4eaf2;
+        }
+
+        .statement-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .statement-brand-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0b376b;
+            color: #f5c451;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .statement-brand h1 {
+            color: #0b376b;
+            font-size: 27px;
+            margin: 0 0 5px;
+        }
+
+        .statement-brand p {
+            margin: 0;
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .statement-back-link {
+            display: inline-block;
+            padding: 11px 17px;
+            background: #edf3fa;
+            color: #0b376b;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .statement-back-link:hover {
+            background: #dce8f7;
+        }
+
+        .statement-nav {
+            background: #104b89;
+            padding: 0 6%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .statement-nav a {
+            color: #fff;
+            display: inline-block;
+            padding: 14px 15px;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .statement-nav a:hover,
+        .statement-nav a.active {
+            background: #082b55;
+        }
+
+        .statement-main {
+            max-width: 1250px;
+            width: 88%;
+            margin: 30px auto 55px;
+        }
+
+        .statement-breadcrumb {
+            color: #7b8798;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .statement-breadcrumb a {
+            color: #14559a;
+        }
+
+        .statement-intro {
+            margin-bottom: 25px;
+        }
+
+        .statement-intro h2 {
+            color: #0b376b;
+            font-size: 30px;
+            margin: 0 0 9px;
+        }
+
+        .statement-intro p {
+            margin: 0;
+            color: #68778c;
+            line-height: 1.6;
+        }
+
+        .statement-layout {
+            display: grid;
+            grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.7fr);
+            gap: 23px;
+            align-items: start;
+        }
+
+        .statement-panel {
+            background: #fff;
+            border: 1px solid #e3eaf3;
+            border-radius: 13px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(15, 44, 80, 0.045);
+            min-width: 0;
+        }
+
+        .statement-panel-heading {
+            margin-bottom: 22px;
+            padding-bottom: 17px;
+            border-bottom: 1px solid #e9eef5;
+        }
+
+        .statement-panel-heading h3 {
+            color: #0b376b;
+            margin: 0 0 7px;
+            font-size: 20px;
+        }
+
+        .statement-panel-heading p {
+            margin: 0;
+            color: #778499;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .statement-form label {
+            display: block;
+            margin: 17px 0 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #35445a;
+        }
+
+        .statement-form select,
+        .statement-form input[type="date"] {
+            display: block;
+            width: 100%;
+            min-height: 45px;
+            border: 1px solid #d6dfeb;
+            border-radius: 7px;
+            padding: 11px 12px;
+            color: #26364a;
+            background: #fff;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .statement-form select:focus,
+        .statement-form input[type="date"]:focus {
+            outline: none;
+            border-color: #1a65ad;
+            box-shadow: 0 0 0 3px rgba(26, 101, 173, 0.12);
+        }
+
+        .statement-page button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .statement-primary-button {
+            width: 100%;
+            margin-top: 23px;
+            padding: 13px 17px;
+            border: none;
+            border-radius: 7px;
+            background: #104b89;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .statement-primary-button:hover {
+            background: #082b55;
+        }
+
+        .statement-primary-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #statementMessage {
+            margin: 14px 0 0;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .statement-form-note {
+            margin-top: 20px;
+            padding: 13px;
+            background: #f1f6fc;
+            border-left: 3px solid #d9aa35;
+            border-radius: 5px;
+            color: #596b82;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .statement-table-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .statement-table-heading h3 {
+            color: #0b376b;
+            font-size: 20px;
+            margin: 0 0 7px;
+        }
+
+        .statement-table-heading p {
+            margin: 0;
+            color: #778499;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        #downloadStatement {
+            border: 1px solid #0d7655;
+            background: #0d7655;
+            color: #fff;
+            border-radius: 7px;
+            padding: 11px 15px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        #downloadStatement:hover:not(:disabled) {
+            background: #095b41;
+        }
+
+        #downloadStatement:disabled {
+            background: #e7ecef;
+            border-color: #d8e0e5;
+            color: #8a96a3;
+            cursor: not-allowed;
+        }
+
+        .statement-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e3eaf3;
+            border-radius: 8px;
+        }
+
+        .statement-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            background: #fff;
+            font-size: 13px;
+        }
+
+        .statement-table thead {
+            background: #edf3fa;
+        }
+
+        .statement-table th {
+            color: #234568;
+            font-weight: bold;
+            text-align: left;
+            padding: 15px 13px;
+            border-bottom: 1px solid #dfe7f1;
+            white-space: nowrap;
+        }
+
+        .statement-table td {
+            color: #4a586b;
+            padding: 14px 13px;
+            border-bottom: 1px solid #edf1f6;
+            vertical-align: middle;
+        }
+
+        .statement-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .statement-table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .statement-empty-state {
+            padding: 35px 15px !important;
+            text-align: center;
+            color: #7b8798 !important;
+        }
+
+        .statement-security-note {
+            margin-top: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 17px;
+            background: #eaf4ef;
+            border: 1px solid #d4e9dd;
+            border-radius: 9px;
+        }
+
+        .statement-security-icon {
+            color: #0d7655;
+            font-size: 21px;
+        }
+
+        .statement-security-note strong {
+            display: block;
+            color: #155d45;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .statement-security-note p {
+            color: #527265;
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .statement-footer {
+            background: #082b55;
+            color: #dce7f5;
+            padding: 25px 6%;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .statement-footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 900px) {
+            .statement-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .statement-main {
+                width: 92%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .statement-topbar {
+                padding: 10px 4%;
+            }
+
+            .statement-header {
+                padding: 18px 4%;
+            }
+
+            .statement-brand h1 {
+                font-size: 23px;
+            }
+
+            .statement-nav {
+                padding: 0 3%;
+            }
+
+            .statement-nav a {
+                padding: 12px 10px;
+                font-size: 12px;
+            }
+
+            .statement-main {
+                width: 92%;
+                margin-top: 23px;
+            }
+
+            .statement-intro h2 {
+                font-size: 25px;
+            }
+
+            .statement-panel {
+                padding: 18px;
+            }
+
+            .statement-table-heading {
+                align-items: flex-start;
+            }
+
+            #downloadStatement {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="statement-page">
+    <div class="statement-topbar">
+        <span>Welcome to MyBank Internet Banking</span>
+        <span>Secure Online Banking</span>
+    </div>
+
+    <header class="statement-header">
+        <div class="statement-brand">
+            <div class="statement-brand-icon" aria-hidden="true">₹</div>
+            <div>
+                <h1>MyBank</h1>
+                <p>Simple. Secure. Convenient.</p>
+            </div>
+        </div>
+
+        <a class="statement-back-link" href="dashboard.html">
+            ← Back to Dashboard
+        </a>
+    </header>
+
+    <nav class="statement-nav" aria-label="Main navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="open-account.html">Open Account</a>
+        <a href="transfer.html">Transfer Money</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="account-statement.html" class="active" aria-current="page">
+            Account Statement
+        </a>
+        <a href="beneficiaries.html">Beneficiaries</a>
+        <a href="bill-payments.html">Bill Payments</a>
+    </nav>
+
+    <main class="statement-main">
+        <div class="statement-breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            <span> / Account Statement</span>
+        </div>
+
+        <section class="statement-intro">
+            <h2>Account Statement</h2>
+            <p>
+                View your account activity for a selected period and download
+                your transaction records as a CSV file.
+            </p>
+        </section>
+
+        <div class="statement-layout">
+            <section class="statement-panel">
+                <div class="statement-panel-heading">
+                    <h3>Generate Statement</h3>
+                    <p>Select an account and date range to view its transactions.</p>
+                </div>
+
+                <form id="statementForm" class="statement-form">
+                    <label for="statementAccount">Select Account</label>
+                    <select id="statementAccount" required>
+                        <option value="">Loading accounts...</option>
+                    </select>
+
+                    <label for="startDate">From Date</label>
+                    <input type="date" id="startDate" required>
+
+                    <label for="endDate">To Date</label>
+                    <input type="date" id="endDate" required>
+
+                    <button
+                        type="submit"
+                        id="generateStatementButton"
+                        class="statement-primary-button"
+                    >
+                        Generate Statement
+                    </button>
+
+                    <p id="statementMessage" role="status" aria-live="polite"></p>
+                </form>
+
+                <div class="statement-form-note">
+                    <strong>Helpful tip</strong><br>
+                    Choose a start date that is earlier than or equal to your
+                    end date to retrieve the intended statement period.
+                </div>
+            </section>
+
+            <section class="statement-panel">
+                <div class="statement-table-heading">
+                    <div>
+                        <h3>Statement Transactions</h3>
+                        <p>Your transaction records for the selected period.</p>
+                    </div>
+
+                    <button type="button" id="downloadStatement" disabled>
+                        ↓ Download CSV
+                    </button>
+                </div>
+
+                <div class="statement-table-wrapper">
+                    <table class="statement-table transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Transaction ID</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statementBody">
+                            <tr>
+                                <td colspan="5" class="statement-empty-state">
+                                    Select an account and date range to view transactions.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="statement-security-note">
+                    <span class="statement-security-icon" aria-hidden="true">✓</span>
+                    <div>
+                        <strong>Keep your financial records safe</strong>
+                        <p>
+                            Downloaded CSV files may contain sensitive transaction
+                            information. Store them securely and avoid sharing them
+                            with untrusted people.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="statement-footer">
+        <p><strong>MyBank Internet Banking</strong></p>
+        <p>Manage your accounts and review your transaction history online.</p>
+        <p>For portfolio and educational use.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/account-statement.js"></script>
+</body>
+</html>
+```

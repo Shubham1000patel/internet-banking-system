@@ -1,0 +1,655 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beneficiaries | MyBank</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .beneficiaries-page {
+            min-height: 100vh;
+            background: #f3f6fb;
+            color: #172b46;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .beneficiaries-page * {
+            box-sizing: border-box;
+        }
+
+        .bp-topbar {
+            padding: 9px 5%;
+            background: #08294f;
+            color: #e5edf8;
+            font-size: 12px;
+            letter-spacing: .3px;
+        }
+
+        .bp-header {
+            padding: 22px 5%;
+            background: #fff;
+            border-bottom: 1px solid #e0e7f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .bp-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .bp-brand-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #123b73;
+            color: #fff;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .bp-brand h1 {
+            margin: 0;
+            color: #123b73;
+            font-size: 25px;
+            line-height: 1.2;
+        }
+
+        .bp-brand p {
+            margin: 5px 0 0;
+            color: #6b7789;
+            font-size: 13px;
+        }
+
+        .bp-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            color: #123b73;
+            background: #fff;
+            border: 1px solid #cbd7e7;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 650;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .bp-back:hover {
+            background: #edf3fb;
+            color: #09264b;
+        }
+
+        .bp-nav {
+            padding: 0 5%;
+            background: #123b73;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .bp-nav a {
+            display: inline-block;
+            padding: 14px 15px;
+            color: #e8eff9;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+        }
+
+        .bp-nav a:hover,
+        .bp-nav a.active {
+            color: #fff;
+            background: rgba(255,255,255,.08);
+            border-bottom-color: #d7ad55;
+        }
+
+        .bp-main {
+            width: min(1180px, 92%);
+            margin: 34px auto 55px;
+        }
+
+        .bp-breadcrumb {
+            margin-bottom: 22px;
+            color: #738198;
+            font-size: 13px;
+        }
+
+        .bp-breadcrumb a {
+            color: #245b99;
+            text-decoration: none;
+        }
+
+        .bp-page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 27px;
+        }
+
+        .bp-page-heading h2 {
+            margin: 0;
+            color: #102e55;
+            font-size: clamp(25px, 3vw, 32px);
+            letter-spacing: -.5px;
+        }
+
+        .bp-page-heading p {
+            margin: 8px 0 0;
+            color: #6b7789;
+            font-size: 14px;
+        }
+
+        .bp-secure-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 13px;
+            border: 1px solid #cce9dc;
+            border-radius: 30px;
+            background: #f0faf5;
+            color: #16734e;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .bp-layout {
+            display: grid;
+            grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+            align-items: start;
+            gap: 24px;
+        }
+
+        .bp-panel {
+            min-width: 0;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e0e7f0;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(16, 42, 78, .06);
+        }
+
+        .bp-panel-heading {
+            padding: 23px 24px;
+            border-bottom: 1px solid #e7edf5;
+        }
+
+        .bp-heading-row {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .bp-heading-icon {
+            flex: 0 0 43px;
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #eaf2fc;
+            color: #164b83;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .bp-panel-heading h3 {
+            margin: 0;
+            color: #12345c;
+            font-size: 19px;
+        }
+
+        .bp-panel-heading p {
+            margin: 5px 0 0;
+            color: #7b8798;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .bp-form-body {
+            padding: 24px;
+        }
+
+        .bp-form-body form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bp-form-body label {
+            margin-top: 8px;
+            color: #334761;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .bp-form-body input {
+            width: 100%;
+            min-height: 47px;
+            padding: 12px 14px;
+            color: #203651;
+            background: #fff;
+            border: 1px solid #ccd7e5;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .bp-form-body input::placeholder {
+            color: #9aa6b7;
+        }
+
+        .bp-form-body input:focus {
+            outline: none;
+            border-color: #3479bf;
+            box-shadow: 0 0 0 3px rgba(52,121,191,.12);
+        }
+
+        .bp-form-hint {
+            margin: 0;
+            color: #8490a1;
+            font-size: 12px;
+        }
+
+        .bp-submit {
+            min-height: 47px;
+            margin-top: 17px;
+            padding: 12px 18px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            background: #123b73;
+            border: 1px solid #123b73;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .bp-submit:hover:not(:disabled) {
+            background: #09264b;
+            transform: translateY(-1px);
+        }
+
+        .bp-submit:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        #beneficiaryMessage {
+            min-height: 22px;
+            margin: 10px 0 0;
+            color: #52647a;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .bp-list-header {
+            padding: 22px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e7edf5;
+        }
+
+        .bp-list-header h3 {
+            margin: 0;
+            color: #12345c;
+            font-size: 19px;
+        }
+
+        .bp-list-header p {
+            margin: 5px 0 0;
+            color: #7b8798;
+            font-size: 13px;
+        }
+
+        .bp-refresh {
+            min-height: 39px;
+            padding: 9px 13px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #123b73;
+            background: #fff;
+            border: 1px solid #cbd7e7;
+            border-radius: 8px;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .bp-refresh:hover {
+            background: #edf3fb;
+        }
+
+        .bp-list-body {
+            padding: 22px 24px;
+        }
+
+        #beneficiariesList {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        #beneficiariesList > p {
+            margin: 0;
+            padding: 28px 12px;
+            color: #7b8798;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* Styling for common beneficiary-card structures generated by JavaScript */
+        #beneficiariesList .beneficiary-card,
+        #beneficiariesList .account-card {
+            min-width: 0;
+            padding: 18px;
+            background: #fbfcfe;
+            border: 1px solid #e1e8f1;
+            border-radius: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        #beneficiariesList .beneficiary-card h3,
+        #beneficiariesList .beneficiary-card h4,
+        #beneficiariesList .account-card h3,
+        #beneficiariesList .account-card h4 {
+            margin-top: 0;
+            color: #173e70;
+        }
+
+        #beneficiariesList button {
+            min-height: 37px;
+            margin: 8px 5px 0 0;
+            padding: 8px 12px;
+            border-radius: 7px;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 650;
+            cursor: pointer;
+        }
+
+        .bp-info {
+            margin-top: 23px;
+            padding: 17px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #eef5fd;
+            border: 1px solid #d8e7f8;
+            border-radius: 11px;
+        }
+
+        .bp-info-icon {
+            flex: 0 0 30px;
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #dceafb;
+            color: #164b83;
+            font-weight: 800;
+        }
+
+        .bp-info h4 {
+            margin: 0 0 4px;
+            color: #174574;
+            font-size: 13px;
+        }
+
+        .bp-info p {
+            margin: 0;
+            color: #58708c;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .bp-footer {
+            padding: 28px 5%;
+            background: #08294f;
+            color: #d5e1f1;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .bp-footer p {
+            margin: 5px 0;
+            color: #d5e1f1;
+        }
+
+        @media (max-width: 850px) {
+            .bp-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .bp-topbar {
+                padding: 9px 4%;
+            }
+
+            .bp-header {
+                padding: 18px 4%;
+            }
+
+            .bp-brand h1 {
+                font-size: 22px;
+            }
+
+            .bp-nav {
+                padding: 0 3%;
+                gap: 0;
+            }
+
+            .bp-nav a {
+                padding: 12px 10px;
+                font-size: 12px;
+            }
+
+            .bp-main {
+                width: 94%;
+                margin-top: 24px;
+            }
+
+            .bp-panel-heading,
+            .bp-form-body,
+            .bp-list-header,
+            .bp-list-body {
+                padding: 19px;
+            }
+
+            .bp-list-header {
+                align-items: flex-start;
+            }
+
+            .bp-refresh {
+                flex-shrink: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bp-back,
+            .bp-submit,
+            .bp-refresh {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="beneficiaries-page">
+    <div class="bp-topbar">
+        MYBANK DIGITAL BANKING &nbsp; | &nbsp; BENEFICIARY MANAGEMENT
+    </div>
+
+    <header class="bp-header">
+        <div class="bp-brand">
+            <div class="bp-brand-icon" aria-hidden="true">M</div>
+            <div>
+                <h1>MyBank</h1>
+                <p>Manage Beneficiaries</p>
+            </div>
+        </div>
+
+        <a class="bp-back" href="dashboard.html">
+            <span aria-hidden="true">←</span>
+            Back to Dashboard
+        </a>
+    </header>
+
+    <nav class="bp-nav" aria-label="Main navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="open-account.html">My Accounts</a>
+        <a href="transfer.html">Money Transfer</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="beneficiaries.html" class="active" aria-current="page">Beneficiaries</a>
+        <a href="bill-payments.html">Bill Payments</a>
+        <a href="account-statement.html">Statements</a>
+    </nav>
+
+    <main class="bp-main">
+        <div class="bp-breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            &nbsp; / &nbsp; Beneficiary Management
+        </div>
+
+        <div class="bp-page-heading">
+            <div>
+                <h2>Beneficiary Management</h2>
+                <p>Add and manage recipient details for convenient future transfers.</p>
+            </div>
+
+            <div class="bp-secure-label">
+                <span aria-hidden="true">●</span>
+                Secure Banking
+            </div>
+        </div>
+
+        <div class="bp-layout">
+            <section class="bp-panel" aria-labelledby="addBeneficiaryTitle">
+                <div class="bp-panel-heading">
+                    <div class="bp-heading-row">
+                        <div class="bp-heading-icon" aria-hidden="true">+</div>
+                        <div>
+                            <h3 id="addBeneficiaryTitle">Add Beneficiary</h3>
+                            <p>Save a recipient's account for future transfers.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-form-body">
+                    <form id="beneficiaryForm">
+                        <label for="beneficiaryName">Beneficiary Name</label>
+                        <input
+                            type="text"
+                            id="beneficiaryName"
+                            maxlength="100"
+                            placeholder="Enter recipient name"
+                            autocomplete="name"
+                            required
+                        />
+
+                        <label for="beneficiaryAccount">Account Number</label>
+                        <input
+                            type="text"
+                            id="beneficiaryAccount"
+                            inputmode="numeric"
+                            pattern="[0-9]{12}"
+                            maxlength="12"
+                            placeholder="Enter 12-digit account number"
+                            autocomplete="off"
+                            required
+                        />
+                        <p class="bp-form-hint">Enter the recipient's 12-digit account number.</p>
+
+                        <label for="beneficiaryBank">Bank Name</label>
+                        <input
+                            type="text"
+                            id="beneficiaryBank"
+                            maxlength="100"
+                            placeholder="Enter bank name"
+                            required
+                        />
+
+                        <button type="submit" id="addBeneficiaryButton" class="bp-submit">
+                            <span aria-hidden="true">+</span>
+                            Add Beneficiary
+                        </button>
+
+                        <p id="beneficiaryMessage" role="status" aria-live="polite"></p>
+                    </form>
+                </div>
+            </section>
+
+            <section class="bp-panel" aria-labelledby="myBeneficiariesTitle">
+                <div class="bp-list-header">
+                    <div>
+                        <h3 id="myBeneficiariesTitle">My Beneficiaries</h3>
+                        <p>Your saved recipients appear here.</p>
+                    </div>
+
+                    <button type="button" id="refreshBeneficiaries" class="bp-refresh">
+                        <span aria-hidden="true">↻</span>
+                        Refresh
+                    </button>
+                </div>
+
+                <div class="bp-list-body">
+                    <div id="beneficiariesList" class="accounts-list">
+                        <p>Loading beneficiaries...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <aside class="bp-info">
+            <div class="bp-info-icon" aria-hidden="true">i</div>
+            <div>
+                <h4>Verify recipient details carefully</h4>
+                <p>
+                    Double-check the beneficiary's name, bank, and account number
+                    before adding them. Never share your password or OTP with anyone.
+                    Only transfer money to recipients you trust.
+                </p>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="bp-footer">
+        <p><strong>MyBank Digital Banking</strong></p>
+        <p>Secure access to your banking information.</p>
+        <p>© 2026 MyBank. Portfolio demonstration project.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/beneficiaries.js"></script>
+</body>
+</html>
+```

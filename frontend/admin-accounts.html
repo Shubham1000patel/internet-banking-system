@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Account Management</title>
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+      .admin-page {
+        max-width: 1200px;
+        margin: 35px auto;
+        padding: 20px;
+      }
+
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+      }
+
+      .admin-header h1 {
+        margin: 0;
+        color: #14213d;
+      }
+
+      .account-controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+
+      .account-controls input,
+      .account-controls select {
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        min-width: 180px;
+      }
+
+      .account-table-wrapper {
+        overflow-x: auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .account-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 850px;
+      }
+
+      .account-table th,
+      .account-table td {
+        padding: 13px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+      }
+
+      .account-table th {
+        background: #14213d;
+        color: white;
+      }
+
+      .account-table tr:hover {
+        background: #f8fafc;
+      }
+
+      .status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .status-active {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .status-blocked {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .status-other {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .account-message {
+        margin: 15px 0;
+        font-weight: 500;
+      }
+
+      .back-link {
+        color: #1d4ed8;
+        text-decoration: none;
+      }
+
+      .back-link:hover {
+        text-decoration: underline;
+      }
+
+      .warning-text {
+        color: #b45309;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="admin-page">
+      <header class="admin-header">
+        <div>
+          <h1>Account Management</h1>
+          <p>View and search customer bank accounts.</p>
+        </div>
+
+        <div>
+          <a class="back-link" href="admin-dashboard.html">
+            ← Back to Dashboard
+          </a>
+          <button type="button" id="refreshAccounts">Refresh</button>
+          <button type="button" id="adminLogoutButton">Logout</button>
+        </div>
+      </header>
+
+      <div class="account-controls">
+        <input
+          type="search"
+          id="accountSearch"
+          placeholder="Search account or customer ID"
+          aria-label="Search accounts"
+        />
+
+        <select id="accountTypeFilter" aria-label="Filter by account type">
+          <option value="">All account types</option>
+          <option value="SAVINGS">Savings</option>
+          <option value="CURRENT">Current</option>
+        </select>
+
+        <select id="accountStatusFilter" aria-label="Filter by account status">
+          <option value="">All statuses</option>
+          <option value="ACTIVE">Active</option>
+          <option value="BLOCKED">Blocked</option>
+          <option value="INACTIVE">Inactive</option>
+        </select>
+      </div>
+
+      <p id="accountMessage" class="account-message" role="status">
+        Loading accounts...
+      </p>
+
+      <p>
+        Total accounts displayed:
+        <strong id="accountCount">0</strong>
+      </p>
+
+      <div class="account-table-wrapper">
+        <table class="account-table">
+          <thead>
+            <tr>
+              <th>Account Number</th>
+              <th>Customer ID</th>
+              <th>Account Type</th>
+              <th>Balance</th>
+              <th>Status</th>
+              <th>Created At</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="accountsTableBody">
+            <tr>
+              <td colspan="6">Loading accounts...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <script src="js/admin-accounts.js"></script>
+  </body>
+</html>

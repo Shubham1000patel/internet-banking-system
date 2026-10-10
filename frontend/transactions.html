@@ -1,0 +1,604 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History | MyBank</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .transactions-page {
+            min-height: 100vh;
+            background: #f3f6fb;
+            color: #172b46;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .transactions-page * {
+            box-sizing: border-box;
+        }
+
+        .tp-topbar {
+            padding: 9px 5%;
+            background: #08294f;
+            color: #e5edf8;
+            font-size: 12px;
+            letter-spacing: .3px;
+        }
+
+        .tp-header {
+            padding: 22px 5%;
+            background: #fff;
+            border-bottom: 1px solid #e0e7f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tp-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .tp-brand-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #123b73;
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .tp-brand h1 {
+            margin: 0;
+            color: #123b73;
+            font-size: 25px;
+            line-height: 1.2;
+        }
+
+        .tp-brand p {
+            margin: 5px 0 0;
+            color: #6b7789;
+            font-size: 13px;
+        }
+
+        .tp-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            color: #123b73;
+            background: #fff;
+            border: 1px solid #cbd7e7;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 650;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .tp-back:hover {
+            background: #edf3fb;
+            color: #09264b;
+        }
+
+        .tp-nav {
+            padding: 0 5%;
+            background: #123b73;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .tp-nav a {
+            display: inline-block;
+            padding: 14px 15px;
+            color: #e8eff9;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tp-nav a:hover,
+        .tp-nav a.active {
+            color: #fff;
+            background: rgba(255,255,255,.08);
+            border-bottom-color: #d7ad55;
+        }
+
+        .tp-main {
+            width: min(1200px, 92%);
+            margin: 34px auto 55px;
+        }
+
+        .tp-breadcrumb {
+            margin-bottom: 22px;
+            color: #738198;
+            font-size: 13px;
+        }
+
+        .tp-breadcrumb a {
+            color: #245b99;
+            text-decoration: none;
+        }
+
+        .tp-page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .tp-page-heading h2 {
+            margin: 0;
+            color: #102e55;
+            font-size: clamp(25px, 3vw, 32px);
+            letter-spacing: -.5px;
+        }
+
+        .tp-page-heading p {
+            margin: 8px 0 0;
+            color: #6b7789;
+            font-size: 14px;
+        }
+
+        .tp-secure-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 13px;
+            border: 1px solid #cce9dc;
+            border-radius: 30px;
+            background: #f0faf5;
+            color: #16734e;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .tp-panel {
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e0e7f0;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(16, 42, 78, .06);
+        }
+
+        .tp-panel-heading {
+            padding: 23px 25px;
+            border-bottom: 1px solid #e7edf5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tp-panel-heading h3 {
+            margin: 0;
+            color: #12345c;
+            font-size: 19px;
+        }
+
+        .tp-panel-heading p {
+            margin: 5px 0 0;
+            color: #7b8798;
+            font-size: 13px;
+        }
+
+        .tp-filter-area {
+            padding: 23px 25px;
+            background: #fbfcfe;
+            border-bottom: 1px solid #e7edf5;
+        }
+
+        .tp-filter-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: 18px;
+        }
+
+        .tp-field label {
+            display: block;
+            margin: 0 0 8px;
+            color: #334761;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .tp-field select {
+            width: 100%;
+            min-height: 47px;
+            padding: 11px 13px;
+            color: #203651;
+            background: #fff;
+            border: 1px solid #ccd7e5;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+        }
+
+        .tp-field select:focus {
+            outline: none;
+            border-color: #3479bf;
+            box-shadow: 0 0 0 3px rgba(52,121,191,.12);
+        }
+
+        .tp-refresh {
+            min-height: 47px;
+            padding: 11px 20px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            background: #123b73;
+            border: 1px solid #123b73;
+            border-radius: 9px;
+            color: #fff;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .tp-refresh:hover {
+            background: #09264b;
+            transform: translateY(-1px);
+        }
+
+        .tp-message {
+            margin: 0;
+            padding: 0 25px;
+            color: #52647a;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .tp-message:not(:empty) {
+            padding-top: 16px;
+        }
+
+        .tp-table-heading {
+            padding: 21px 25px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tp-table-heading h3 {
+            margin: 0;
+            color: #183759;
+            font-size: 16px;
+        }
+
+        .tp-table-heading span {
+            color: #78869a;
+            font-size: 12px;
+        }
+
+        .tp-table-wrapper {
+            margin: 0 25px 25px;
+            overflow-x: auto;
+            border: 1px solid #e1e8f1;
+            border-radius: 11px;
+        }
+
+        .tp-table {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        .tp-table thead th {
+            padding: 15px 17px;
+            background: #123b73;
+            color: #fff;
+            text-align: left;
+            white-space: nowrap;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .35px;
+            text-transform: uppercase;
+        }
+
+        .tp-table tbody td {
+            padding: 16px 17px;
+            color: #3c4e65;
+            border-bottom: 1px solid #eaf0f6;
+            text-align: left;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .tp-table tbody tr:nth-child(even) {
+            background: #f9fbfe;
+        }
+
+        .tp-table tbody tr:hover {
+            background: #f0f5fc;
+        }
+
+        .tp-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tp-table tbody td:first-child {
+            color: #263d59;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .tp-table tbody td:nth-child(2) {
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        }
+
+        .tp-table tbody td:nth-child(4) {
+            color: #173e70;
+            font-weight: 750;
+            white-space: nowrap;
+        }
+
+        .tp-empty {
+            padding: 38px 18px !important;
+            color: #758399 !important;
+            text-align: center !important;
+        }
+
+        .tp-info {
+            margin-top: 20px;
+            padding: 17px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #eef5fd;
+            border: 1px solid #d8e7f8;
+            border-radius: 11px;
+        }
+
+        .tp-info-icon {
+            flex: 0 0 30px;
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #dceafb;
+            color: #164b83;
+            font-weight: 800;
+        }
+
+        .tp-info h4 {
+            margin: 0 0 4px;
+            color: #174574;
+            font-size: 13px;
+        }
+
+        .tp-info p {
+            margin: 0;
+            color: #58708c;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .tp-footer {
+            padding: 28px 5%;
+            background: #08294f;
+            color: #d5e1f1;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .tp-footer p {
+            margin: 5px 0;
+            color: #d5e1f1;
+        }
+
+        @media (max-width: 650px) {
+            .tp-topbar {
+                padding: 9px 4%;
+            }
+
+            .tp-header {
+                padding: 18px 4%;
+            }
+
+            .tp-brand h1 {
+                font-size: 22px;
+            }
+
+            .tp-nav {
+                padding: 0 3%;
+                gap: 0;
+            }
+
+            .tp-nav a {
+                padding: 12px 10px;
+                font-size: 12px;
+            }
+
+            .tp-main {
+                width: 94%;
+                margin-top: 24px;
+            }
+
+            .tp-filter-area,
+            .tp-panel-heading {
+                padding: 19px;
+            }
+
+            .tp-filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tp-refresh {
+                width: 100%;
+            }
+
+            .tp-table-heading {
+                padding: 19px 19px 12px;
+            }
+
+            .tp-table-wrapper {
+                margin: 0 12px 18px;
+            }
+
+            .tp-message {
+                padding-right: 19px;
+                padding-left: 19px;
+            }
+
+            .tp-message:not(:empty) {
+                padding-top: 14px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tp-back,
+            .tp-refresh {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="transactions-page">
+    <div class="tp-topbar">
+        MYBANK DIGITAL BANKING &nbsp; | &nbsp; SECURE TRANSACTION SERVICES
+    </div>
+
+    <header class="tp-header">
+        <div class="tp-brand">
+            <div class="tp-brand-icon" aria-hidden="true">M</div>
+            <div>
+                <h1>MyBank</h1>
+                <p>Transaction History</p>
+            </div>
+        </div>
+
+        <a class="tp-back" href="dashboard.html">
+            <span aria-hidden="true">←</span>
+            Back to Dashboard
+        </a>
+    </header>
+
+    <nav class="tp-nav" aria-label="Main navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="open-account.html">My Accounts</a>
+        <a href="transfer.html">Money Transfer</a>
+        <a href="transactions.html" class="active" aria-current="page">Transactions</a>
+        <a href="beneficiaries.html">Beneficiaries</a>
+        <a href="bill-payments.html">Bill Payments</a>
+        <a href="account-statement.html">Statements</a>
+    </nav>
+
+    <main class="tp-main">
+        <div class="tp-breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            &nbsp; / &nbsp; Transaction History
+        </div>
+
+        <div class="tp-page-heading">
+            <div>
+                <h2>Transaction History</h2>
+                <p>Review the activity and status of transactions in your bank account.</p>
+            </div>
+
+            <div class="tp-secure-label">
+                <span aria-hidden="true">●</span>
+                Secure Banking
+            </div>
+        </div>
+
+        <section class="tp-panel" aria-labelledby="transactionPanelTitle">
+            <div class="tp-panel-heading">
+                <div>
+                    <h3 id="transactionPanelTitle">My Transactions</h3>
+                    <p>Choose an account to view its transaction records.</p>
+                </div>
+            </div>
+
+            <div class="tp-filter-area">
+                <div class="tp-filter-grid">
+                    <div class="tp-field">
+                        <label for="accountSelect">Select Account</label>
+                        <select id="accountSelect">
+                            <option value="">Loading accounts...</option>
+                        </select>
+                    </div>
+
+                    <button type="button" id="refreshTransactions" class="tp-refresh">
+                        <span aria-hidden="true">↻</span>
+                        Refresh Transactions
+                    </button>
+                </div>
+            </div>
+
+            <p id="transactionMessage" class="tp-message" role="status" aria-live="polite"></p>
+
+            <div class="tp-table-heading">
+                <h3>Recent Activity</h3>
+                <span>Transaction details</span>
+            </div>
+
+            <div class="tp-table-wrapper">
+                <table class="tp-table transaction-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Transaction ID</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="transactionTableBody">
+                        <tr>
+                            <td colspan="5" class="tp-empty">Loading transactions...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <aside class="tp-info">
+            <div class="tp-info-icon" aria-hidden="true">i</div>
+            <div>
+                <h4>Keep your transactions secure</h4>
+                <p>
+                    Review transaction details regularly. Never share your password,
+                    OTP, or other confidential banking credentials with anyone.
+                    If you notice an unfamiliar transaction, contact your bank.
+                </p>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="tp-footer">
+        <p><strong>MyBank Digital Banking</strong></p>
+        <p>Secure access to your banking information.</p>
+        <p>© 2026 MyBank. Portfolio demonstration project.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/transactions.js"></script>
+</body>
+</html>
+```

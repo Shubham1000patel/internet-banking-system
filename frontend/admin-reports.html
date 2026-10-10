@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Reports | Banking Admin</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fa;
+            color: #1e293b;
+        }
+
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        header h1 {
+            font-size: 23px;
+        }
+
+        header a {
+            color: #fbbf24;
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .page-heading p {
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        button {
+            border: none;
+            border-radius: 6px;
+            padding: 11px 17px;
+            background: #1d4ed8;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.06);
+            border-left: 4px solid #2563eb;
+        }
+
+        .summary-card h3 {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .summary-card p {
+            font-size: 25px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .report-section {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.06);
+        }
+
+        .report-section h2 {
+            margin-bottom: 18px;
+            font-size: 19px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 520px;
+        }
+
+        th, td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        #reportMessage {
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .warning-text {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        .type-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .summary-card p {
+                font-size: 22px;
+            }
+
+            .report-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Banking Admin Panel</h1>
+        <nav>
+            <a href="admin-dashboard.html">Dashboard</a>
+            &nbsp; | &nbsp;
+            <a href="admin-transactions.html">Transactions</a>
+            &nbsp; | &nbsp;
+            <a href="#" id="adminLogoutButton">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-heading">
+            <div>
+                <h2>Financial Reports</h2>
+                <p>Transaction summary grouped by transaction type.</p>
+            </div>
+
+            <button type="button" id="refreshReports">
+                Refresh Reports
+            </button>
+        </div>
+
+        <p id="reportMessage">Loading financial reports...</p>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <h3>Transaction Types</h3>
+                <p id="transactionTypeCount">—</p>
+            </article>
+
+            <article class="summary-card">
+                <h3>Total Transactions</h3>
+                <p id="totalTransactions">—</p>
+            </article>
+
+            <article class="summary-card">
+                <h3>Combined Report Amount</h3>
+                <p id="totalReportAmount">—</p>
+            </article>
+        </section>
+
+        <section class="report-section">
+            <h2>Transaction Breakdown</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction Type</th>
+                            <th>Transaction Count</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="financialReportsTableBody">
+                        <tr>
+                            <td colspan="3">Loading report data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/admin-reports.js"></script>
+</body>
+</html>
+

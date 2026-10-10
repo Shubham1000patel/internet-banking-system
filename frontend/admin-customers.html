@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management | Admin Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #f3f6fb;
+            color: #1e293b;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-header {
+            background: #071a35;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .admin-header h1 { margin: 0; font-size: 23px; }
+
+        .admin-header a {
+            color: #f5d47b;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 28px 20px;
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .page-heading h2 { margin: 0 0 8px; color: #123e70; }
+        .page-heading p { margin: 0; color: #64748b; }
+
+        .panel {
+            background: white;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(7, 26, 53, .04);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .toolbar input, .toolbar select {
+            flex: 1;
+            min-width: 180px;
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 11px 15px;
+            border: none;
+            border-radius: 7px;
+            background: #123e70;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover { background: #0b2d52; }
+        button:disabled { opacity: .6; cursor: not-allowed; }
+
+        .table-wrapper { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        th, td {
+            padding: 13px 12px;
+            border-bottom: 1px solid #e5eaf1;
+            text-align: left;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #edf3fa;
+            color: #123e70;
+            white-space: nowrap;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #e2e8f0;
+            color: #334155;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-active { background: #dcfce7; color: #166534; }
+        .status-blocked { background: #fee2e2; color: #991b1b; }
+        .status-inactive { background: #e2e8f0; color: #475569; }
+        .status-kyc_required { background: #fef3c7; color: #92400e; }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 180px;
+        }
+
+        .actions select {
+            width: 120px;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+
+        .actions button {
+            padding: 8px 10px;
+            background: #b38724;
+            color: #071a35;
+        }
+
+        #customerMessage {
+            margin: 0 0 16px;
+            overflow-wrap: anywhere;
+        }
+
+        .count { color: #64748b; margin: 0 0 14px; font-size: 14px; }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 12px; }
+            .panel { padding: 14px; }
+            .admin-header { padding: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <h1>Customer Management</h1>
+        <a href="admin-dashboard.html">← Back to Dashboard</a>
+    </header>
+
+    <main class="container">
+        <section class="page-heading">
+            <div>
+                <h2>Registered Customers</h2>
+                <p>View customer information and manage customer status.</p>
+            </div>
+            <button type="button" id="refreshCustomers">Refresh Customers</button>
+        </section>
+
+        <section class="panel">
+            <div id="customerMessage" role="status" aria-live="polite"></div>
+
+            <div class="toolbar">
+                <input
+                    type="search"
+                    id="customerSearch"
+                    placeholder="Search name, email, phone or ID..."
+                    aria-label="Search customers"
+                >
+
+                <select id="statusFilter" aria-label="Filter by status">
+                    <option value="">All statuses</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="BLOCKED">BLOCKED</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                    <option value="KYC_REQUIRED">KYC_REQUIRED</option>
+                </select>
+            </div>
+
+            <p class="count" id="customerCount">Loading customers...</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date of Birth</th>
+                            <th>Status</th>
+                            <th>Registered At</th>
+                            <th>Manage Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="customersTableBody">
+                        <tr>
+                            <td colspan="9">Loading customers...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/admin-customers.js"></script>
+</body>
+</html>
+

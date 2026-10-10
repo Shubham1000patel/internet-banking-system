@@ -1,0 +1,742 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MyBank | Dashboard</title>
+    <meta name="description" content="View your MyBank account balances and access your banking services.">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* ===== DASHBOARD DESIGN ===== */
+        .bank-dashboard {
+            --db-blue: #10376b;
+            --db-dark: #08264d;
+            --db-gold: #e0b85b;
+            --db-text: #1c2d43;
+            --db-muted: #718096;
+            --db-border: #e2e9f2;
+            min-height: 100vh;
+            margin: 0;
+            background: #f3f6fb;
+            color: var(--db-text);
+            font-family: "Segoe UI", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .bank-dashboard * {
+            box-sizing: border-box;
+        }
+
+        .bank-dashboard a {
+            text-decoration: none;
+        }
+
+        .db-container {
+            width: min(1200px, 92%);
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .bank-dashboard .db-topbar {
+            background: #071d3a;
+            color: #dbe6f5;
+            padding: 8px 0;
+            font-size: 12px;
+        }
+
+        .bank-dashboard .db-topbar-inner {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .bank-dashboard .db-header {
+            background: #fff;
+            border-bottom: 1px solid var(--db-border);
+        }
+
+        .bank-dashboard .db-header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 0;
+        }
+
+        .bank-dashboard .db-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bank-dashboard .db-brand-icon {
+            display: grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            color: #fff;
+            background: linear-gradient(145deg, #174d8d, #09264d);
+            font-size: 25px;
+        }
+
+        .bank-dashboard .db-brand h1 {
+            margin: 0;
+            color: var(--db-dark);
+            font-size: 25px;
+            line-height: 1.2;
+        }
+
+        .bank-dashboard .db-brand p {
+            margin: 3px 0 0;
+            color: var(--db-muted);
+            font-size: 12px;
+        }
+
+        .bank-dashboard .db-header-right {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .bank-dashboard .db-user-label {
+            color: var(--db-muted);
+            font-size: 13px;
+        }
+
+        .bank-dashboard .db-logout {
+            padding: 10px 17px;
+            border: 1px solid #d4deeb;
+            border-radius: 8px;
+            background: #fff;
+            color: var(--db-blue);
+            font: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .bank-dashboard .db-logout:hover {
+            background: #edf3fb;
+        }
+
+        /* Navigation */
+        .bank-dashboard .db-nav {
+            background: var(--db-blue);
+            border-bottom: 3px solid var(--db-gold);
+        }
+
+        .bank-dashboard .db-nav-inner {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .bank-dashboard .db-nav a {
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .bank-dashboard .db-nav a:hover {
+            background: #ffffff18;
+        }
+
+        /* Main area */
+        .bank-dashboard .db-main {
+            padding: 32px 0 55px;
+        }
+
+        .bank-dashboard .db-welcome {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 30px 32px;
+            border-radius: 17px;
+            background: linear-gradient(115deg, #08264d, #174f89);
+            color: #fff;
+            box-shadow: 0 12px 28px #102a4e1c;
+        }
+
+        .bank-dashboard .db-welcome::after {
+            content: "";
+            position: absolute;
+            right: -60px;
+            top: -110px;
+            width: 280px;
+            height: 280px;
+            border: 1px solid #ffffff24;
+            border-radius: 50%;
+            box-shadow: 0 0 0 35px #ffffff09, 0 0 0 70px #ffffff06;
+            pointer-events: none;
+        }
+
+        .bank-dashboard .db-welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .bank-dashboard .db-eyebrow {
+            margin: 0 0 7px;
+            color: #e7c875;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .bank-dashboard .db-welcome h2 {
+            margin: 0;
+            color: #fff;
+            font-size: clamp(25px, 3vw, 34px);
+        }
+
+        .bank-dashboard .db-welcome-description {
+            margin: 8px 0 0;
+            color: #d6e4f5;
+            font-size: 14px;
+        }
+
+        .bank-dashboard #dashboardMessage {
+            margin: 8px 0 0;
+            color: #fff;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .bank-dashboard .db-welcome-badge {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            width: 70px;
+            height: 70px;
+            flex-shrink: 0;
+            border: 1px solid #ffffff35;
+            border-radius: 20px;
+            background: #ffffff12;
+            font-size: 34px;
+        }
+
+        /* Balance cards */
+        .bank-dashboard .db-section-label {
+            margin: 31px 0 15px;
+            color: var(--db-dark);
+            font-size: 19px;
+            font-weight: 750;
+        }
+
+        .bank-dashboard .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .bank-dashboard .summary-card {
+            position: relative;
+            overflow: hidden;
+            min-width: 0;
+            padding: 24px;
+            border: 1px solid var(--db-border);
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 6px 20px #102a4e08;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .bank-dashboard .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px #102a4e12;
+        }
+
+        .bank-dashboard .summary-card.total-card {
+            border-top: 3px solid var(--db-gold);
+        }
+
+        .bank-dashboard .db-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .bank-dashboard .summary-card > p {
+            margin: 0;
+            color: var(--db-muted);
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .bank-dashboard .db-card-icon {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            background: #edf3fb;
+            font-size: 21px;
+        }
+
+        .bank-dashboard .summary-card h2 {
+            margin: 16px 0 5px;
+            color: var(--db-dark);
+            font-size: clamp(22px, 2.5vw, 30px);
+            overflow-wrap: anywhere;
+        }
+
+        .bank-dashboard .summary-card > span {
+            color: var(--db-muted);
+            font-size: 12px;
+        }
+
+        .bank-dashboard .db-card-accent {
+            position: absolute;
+            right: -20px;
+            bottom: -35px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #edf3fb;
+            opacity: .7;
+            pointer-events: none;
+        }
+
+        /* Shared panels */
+        .bank-dashboard .db-panel {
+            margin-top: 25px;
+            padding: 25px;
+            border: 1px solid var(--db-border);
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 6px 20px #102a4e08;
+        }
+
+        .bank-dashboard .db-panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 13px;
+            margin-bottom: 19px;
+        }
+
+        .bank-dashboard .db-panel-heading h2 {
+            margin: 0;
+            color: var(--db-dark);
+            font-size: 20px;
+        }
+
+        .bank-dashboard .db-panel-heading p {
+            margin: 4px 0 0;
+            color: var(--db-muted);
+            font-size: 12px;
+        }
+
+        .bank-dashboard .db-refresh {
+            padding: 9px 15px;
+            border: 1px solid #d1dceb;
+            border-radius: 8px;
+            background: #fff;
+            color: var(--db-blue);
+            font: inherit;
+            font-size: 12px;
+            font-weight: 750;
+            cursor: pointer;
+        }
+
+        .bank-dashboard .db-refresh:hover {
+            background: #edf3fb;
+        }
+
+        /* Account list generated by dashboard.js */
+        .bank-dashboard .accounts-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .bank-dashboard .accounts-list > p {
+            grid-column: 1 / -1;
+            margin: 0;
+            padding: 22px;
+            border-radius: 10px;
+            background: #f6f8fc;
+            color: var(--db-muted);
+        }
+
+        .bank-dashboard .account-card {
+            min-width: 0;
+            padding: 21px;
+            border: 1px solid #dfe7f1;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #fff, #f7faff);
+        }
+
+        .bank-dashboard .account-card h3 {
+            margin: 0 0 6px;
+            color: var(--db-dark);
+        }
+
+        .bank-dashboard .account-card p {
+            color: var(--db-muted);
+            overflow-wrap: anywhere;
+        }
+
+        /* Quick actions */
+        .bank-dashboard .db-actions-panel {
+            margin-top: 25px;
+            padding: 25px;
+            border: 1px solid var(--db-border);
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 6px 20px #102a4e08;
+        }
+
+        .bank-dashboard .db-actions-panel > h2 {
+            margin: 0 0 6px;
+            color: var(--db-dark);
+            font-size: 20px;
+        }
+
+        .bank-dashboard .db-actions-description {
+            margin: 0 0 20px;
+            color: var(--db-muted);
+            font-size: 13px;
+        }
+
+        .bank-dashboard .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .bank-dashboard .action-card {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+            min-height: 83px;
+            padding: 17px;
+            border: 1px solid #e0e8f2;
+            border-radius: 12px;
+            background: #fff;
+            color: var(--db-text);
+            transition: border-color .2s ease, background .2s ease, transform .2s ease;
+        }
+
+        .bank-dashboard .action-card:hover {
+            transform: translateY(-3px);
+            border-color: #a9c2e2;
+            background: #f5f8fd;
+        }
+
+        .bank-dashboard .action-card > span {
+            display: grid;
+            place-items: center;
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            background: #eaf1fb;
+            color: var(--db-blue);
+            font-size: 23px;
+        }
+
+        .bank-dashboard .action-card strong {
+            color: var(--db-dark);
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        /* Footer */
+        .bank-dashboard .db-footer {
+            padding: 23px 0;
+            background: var(--db-dark);
+            color: #c3d1e5;
+        }
+
+        .bank-dashboard .db-footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            font-size: 12px;
+        }
+
+        .bank-dashboard .db-footer a {
+            color: #fff;
+        }
+
+        .bank-dashboard .db-footer a:hover {
+            color: var(--db-gold);
+        }
+
+        .bank-dashboard a:focus-visible,
+        .bank-dashboard button:focus-visible {
+            outline: 3px solid var(--db-gold);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 850px) {
+            .bank-dashboard .summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .bank-dashboard .summary-card:first-child {
+                grid-column: 1 / -1;
+            }
+
+            .bank-dashboard .action-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .bank-dashboard .db-header-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .bank-dashboard .db-header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .bank-dashboard .db-nav-inner {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .bank-dashboard .db-nav a {
+                padding: 11px 8px;
+                font-size: 12px;
+            }
+
+            .bank-dashboard .db-main {
+                padding-top: 20px;
+            }
+
+            .bank-dashboard .db-welcome {
+                padding: 23px;
+            }
+
+            .bank-dashboard .db-welcome-badge {
+                width: 49px;
+                height: 49px;
+                border-radius: 13px;
+                font-size: 24px;
+            }
+
+            .bank-dashboard .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bank-dashboard .summary-card:first-child {
+                grid-column: auto;
+            }
+
+            .bank-dashboard .db-panel,
+            .bank-dashboard .db-actions-panel {
+                padding: 18px;
+            }
+
+            .bank-dashboard .accounts-list,
+            .bank-dashboard .action-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bank-dashboard .db-footer-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bank-dashboard *,
+            .bank-dashboard *::before,
+            .bank-dashboard *::after {
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bank-dashboard">
+
+    <!-- Top information bar -->
+    <div class="db-topbar">
+        <div class="db-container db-topbar-inner">
+            <span>MyBank Internet Banking</span>
+            <span>Secure access · Convenient banking</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="db-header">
+        <div class="db-container db-header-inner">
+            <a class="db-brand" href="index.html" aria-label="MyBank homepage">
+                <span class="db-brand-icon" aria-hidden="true">🏦</span>
+                <span>
+                    <h1>MyBank</h1>
+                    <p>INTERNET BANKING PORTAL</p>
+                </span>
+            </a>
+
+            <div class="db-header-right">
+                <span class="db-user-label">Your personal banking dashboard</span>
+                <button type="button" id="logoutButton" class="db-logout">
+                    Logout ↗
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="db-nav" aria-label="Banking navigation">
+        <div class="db-container db-nav-inner">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="open-account.html">Open Account</a>
+            <a href="transfer.html">Transfer Money</a>
+            <a href="transactions.html">Transactions</a>
+            <a href="beneficiaries.html">Beneficiaries</a>
+            <a href="bill-payments.html">Bill Payments</a>
+            <a href="account-statement.html">Statements</a>
+        </div>
+    </nav>
+
+    <main class="db-container db-main">
+
+        <!-- Welcome banner -->
+        <section class="db-welcome">
+            <div class="db-welcome-content">
+                <p class="db-eyebrow">PERSONAL BANKING</p>
+                <h2 id="welcomeMessage">Welcome back!</h2>
+                <p class="db-welcome-description">
+                    Here is your account overview. What would you like to do today?
+                </p>
+                <p id="dashboardMessage" role="status" aria-live="polite"></p>
+            </div>
+            <div class="db-welcome-badge" aria-hidden="true">✦</div>
+        </section>
+
+        <!-- Balance overview -->
+        <h2 class="db-section-label">Your Financial Overview</h2>
+
+        <section class="summary-grid" aria-label="Account balance summary">
+            <article class="summary-card total-card">
+                <div class="db-card-top">
+                    <p>Total Balance</p>
+                    <span class="db-card-icon" aria-hidden="true">💰</span>
+                </div>
+                <h2 id="totalBalance">Loading...</h2>
+                <span>Across all your accounts</span>
+                <span class="db-card-accent" aria-hidden="true"></span>
+            </article>
+
+            <article class="summary-card">
+                <div class="db-card-top">
+                    <p>Savings Account</p>
+                    <span class="db-card-icon" aria-hidden="true">🏦</span>
+                </div>
+                <h2 id="savingsBalance">Loading...</h2>
+                <span id="savingsCount">Loading accounts...</span>
+                <span class="db-card-accent" aria-hidden="true"></span>
+            </article>
+
+            <article class="summary-card">
+                <div class="db-card-top">
+                    <p>Current Account</p>
+                    <span class="db-card-icon" aria-hidden="true">📈</span>
+                </div>
+                <h2 id="currentBalance">Loading...</h2>
+                <span id="currentCount">Loading accounts...</span>
+                <span class="db-card-accent" aria-hidden="true"></span>
+            </article>
+        </section>
+
+        <!-- Accounts -->
+        <section class="db-panel">
+            <div class="db-panel-heading">
+                <div>
+                    <h2>My Accounts</h2>
+                    <p>Review your account details and available balances.</p>
+                </div>
+                <button type="button" id="refreshButton" class="db-refresh">
+                    ↻ Refresh Accounts
+                </button>
+            </div>
+
+            <div id="accountsList" class="accounts-list">
+                <p>Loading your accounts...</p>
+            </div>
+        </section>
+
+        <!-- Quick actions -->
+        <section class="db-actions-panel">
+            <h2>Quick Actions</h2>
+            <p class="db-actions-description">
+                Access your frequently used banking services.
+            </p>
+
+            <div class="action-grid">
+                <a href="open-account.html" class="action-card" id="openAccountAction">
+                    <span aria-hidden="true">＋</span>
+                    <strong>Open New Account</strong>
+                </a>
+
+                <a href="transfer.html" class="action-card">
+                    <span aria-hidden="true">↗</span>
+                    <strong>Transfer Money</strong>
+                </a>
+
+                <a href="transactions.html" class="action-card">
+                    <span aria-hidden="true">↔</span>
+                    <strong>Transaction History</strong>
+                </a>
+
+                <a href="beneficiaries.html" class="action-card">
+                    <span aria-hidden="true">👤</span>
+                    <strong>Manage Beneficiaries</strong>
+                </a>
+
+                <a href="bill-payments.html" class="action-card">
+                    <span aria-hidden="true">🧾</span>
+                    <strong>Pay Bills</strong>
+                </a>
+
+                <a href="account-statement.html" class="action-card">
+                    <span aria-hidden="true">📄</span>
+                    <strong>Account Statement</strong>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="db-footer">
+        <div class="db-container db-footer-inner">
+            <span>© 2026 MyBank · Educational portfolio project</span>
+            <span>
+                <a href="index.html">Home</a>
+                &nbsp; · &nbsp;
+                <a href="#security" onclick="return false;">Secure Banking</a>
+            </span>
+        </div>
+    </footer>
+
+    <!-- Existing JavaScript remains unchanged -->
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+
+</body>
+</html>

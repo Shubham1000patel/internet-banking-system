@@ -1,0 +1,578 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open New Account | MyBank</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .open-account-page {
+            min-height: 100vh;
+            background: #f3f6fb;
+            color: #172b46;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .open-account-page * {
+            box-sizing: border-box;
+        }
+
+        .oa-topbar {
+            padding: 9px 5%;
+            background: #08294f;
+            color: #e5edf8;
+            font-size: 12px;
+            letter-spacing: .3px;
+        }
+
+        .oa-header {
+            padding: 22px 5%;
+            background: #fff;
+            border-bottom: 1px solid #e0e7f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .oa-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .oa-brand-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #123b73;
+            color: #fff;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .oa-brand h1 {
+            margin: 0;
+            color: #123b73;
+            font-size: 25px;
+            line-height: 1.2;
+        }
+
+        .oa-brand p {
+            margin: 5px 0 0;
+            color: #6b7789;
+            font-size: 13px;
+        }
+
+        .oa-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            color: #123b73;
+            background: #fff;
+            border: 1px solid #cbd7e7;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 650;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .oa-back:hover {
+            background: #edf3fb;
+            color: #09264b;
+        }
+
+        .oa-nav {
+            padding: 0 5%;
+            background: #123b73;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .oa-nav a {
+            display: inline-block;
+            padding: 14px 15px;
+            color: #e8eff9;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+        }
+
+        .oa-nav a:hover,
+        .oa-nav a.active {
+            color: #fff;
+            background: rgba(255,255,255,.08);
+            border-bottom-color: #d7ad55;
+        }
+
+        .oa-main {
+            width: min(1080px, 92%);
+            margin: 34px auto 55px;
+        }
+
+        .oa-breadcrumb {
+            margin-bottom: 22px;
+            color: #738198;
+            font-size: 13px;
+        }
+
+        .oa-breadcrumb a {
+            color: #245b99;
+            text-decoration: none;
+        }
+
+        .oa-page-heading {
+            margin-bottom: 27px;
+        }
+
+        .oa-page-heading h2 {
+            margin: 0;
+            color: #102e55;
+            font-size: clamp(25px, 3vw, 32px);
+            letter-spacing: -.5px;
+        }
+
+        .oa-page-heading p {
+            margin: 8px 0 0;
+            color: #6b7789;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .oa-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+            align-items: start;
+            gap: 25px;
+        }
+
+        .oa-panel {
+            min-width: 0;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e0e7f0;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(16,42,78,.06);
+        }
+
+        .oa-panel-heading {
+            padding: 24px;
+            border-bottom: 1px solid #e7edf5;
+        }
+
+        .oa-panel-heading h3 {
+            margin: 0;
+            color: #12345c;
+            font-size: 20px;
+        }
+
+        .oa-panel-heading p {
+            margin: 6px 0 0;
+            color: #7b8798;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .oa-form-body {
+            padding: 24px;
+        }
+
+        .oa-form-body form {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .oa-form-body label {
+            margin-top: 9px;
+            color: #334761;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .oa-form-body select,
+        .oa-form-body input {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 14px;
+            color: #203651;
+            background: #fff;
+            border: 1px solid #ccd7e5;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .oa-form-body select:focus,
+        .oa-form-body input:focus {
+            outline: none;
+            border-color: #3479bf;
+            box-shadow: 0 0 0 3px rgba(52,121,191,.12);
+        }
+
+        .oa-field-hint {
+            margin: 0;
+            color: #8490a1;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .oa-submit {
+            min-height: 48px;
+            margin-top: 18px;
+            padding: 12px 18px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 9px;
+            color: #fff;
+            background: #123b73;
+            border: 1px solid #123b73;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .oa-submit:hover:not(:disabled) {
+            background: #09264b;
+            transform: translateY(-1px);
+        }
+
+        .oa-submit:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        #accountMessage {
+            min-height: 23px;
+            margin: 12px 0 0;
+            color: #52647a;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .oa-side-panel {
+            padding: 24px;
+            background: linear-gradient(145deg, #123b73, #08294f);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(8,41,79,.16);
+            color: #fff;
+        }
+
+        .oa-side-panel h3 {
+            margin: 0;
+            color: #fff;
+            font-size: 21px;
+        }
+
+        .oa-side-panel > p {
+            margin: 9px 0 22px;
+            color: #d6e3f4;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .oa-account-option {
+            margin-top: 13px;
+            padding: 17px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 12px;
+        }
+
+        .oa-option-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .oa-option-icon {
+            flex: 0 0 41px;
+            width: 41px;
+            height: 41px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: rgba(255,255,255,.14);
+            color: #f0d79e;
+            font-size: 21px;
+            font-weight: 750;
+        }
+
+        .oa-account-option h4 {
+            margin: 0;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .oa-account-option p {
+            margin: 5px 0 0;
+            color: #d6e3f4;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .oa-side-note {
+            margin-top: 20px;
+            padding-top: 17px;
+            border-top: 1px solid rgba(255,255,255,.2);
+            color: #d6e3f4;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .oa-info {
+            margin-top: 24px;
+            padding: 17px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #eef5fd;
+            border: 1px solid #d8e7f8;
+            border-radius: 11px;
+        }
+
+        .oa-info-icon {
+            flex: 0 0 30px;
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #dceafb;
+            color: #164b83;
+            font-weight: 800;
+        }
+
+        .oa-info h4 {
+            margin: 0 0 4px;
+            color: #174574;
+            font-size: 13px;
+        }
+
+        .oa-info p {
+            margin: 0;
+            color: #58708c;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .oa-footer {
+            padding: 28px 5%;
+            background: #08294f;
+            color: #d5e1f1;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .oa-footer p {
+            margin: 5px 0;
+            color: #d5e1f1;
+        }
+
+        @media (max-width: 780px) {
+            .oa-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .oa-topbar {
+                padding: 9px 4%;
+            }
+
+            .oa-header {
+                padding: 18px 4%;
+            }
+
+            .oa-brand h1 {
+                font-size: 22px;
+            }
+
+            .oa-nav {
+                padding: 0 3%;
+                gap: 0;
+            }
+
+            .oa-nav a {
+                padding: 12px 10px;
+                font-size: 12px;
+            }
+
+            .oa-main {
+                width: 94%;
+                margin-top: 24px;
+            }
+
+            .oa-panel-heading,
+            .oa-form-body,
+            .oa-side-panel {
+                padding: 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .oa-back,
+            .oa-submit {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="open-account-page">
+    <div class="oa-topbar">
+        MYBANK DIGITAL BANKING &nbsp; | &nbsp; ACCOUNT SERVICES
+    </div>
+
+    <header class="oa-header">
+        <div class="oa-brand">
+            <div class="oa-brand-icon" aria-hidden="true">M</div>
+            <div>
+                <h1>MyBank</h1>
+                <p>Open a New Account</p>
+            </div>
+        </div>
+
+        <a class="oa-back" href="dashboard.html">
+            <span aria-hidden="true">←</span>
+            Back to Dashboard
+        </a>
+    </header>
+
+    <nav class="oa-nav" aria-label="Main navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="open-account.html" class="active" aria-current="page">My Accounts</a>
+        <a href="transfer.html">Money Transfer</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="beneficiaries.html">Beneficiaries</a>
+        <a href="bill-payments.html">Bill Payments</a>
+        <a href="account-statement.html">Statements</a>
+    </nav>
+
+    <main class="oa-main">
+        <div class="oa-breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            &nbsp; / &nbsp; Open New Account
+        </div>
+
+        <div class="oa-page-heading">
+            <h2>Open a New Account</h2>
+            <p>Choose the account that fits your needs and configure your initial deposit.</p>
+        </div>
+
+        <div class="oa-layout">
+            <section class="oa-panel" aria-labelledby="openAccountTitle">
+                <div class="oa-panel-heading">
+                    <h3 id="openAccountTitle">Account Application</h3>
+                    <p>Complete the fields below to submit your account request.</p>
+                </div>
+
+                <div class="oa-form-body">
+                    <form id="openAccountForm">
+                        <label for="accountType">Account Type</label>
+                        <select id="accountType" name="account_type" required>
+                            <option value="">Select account type</option>
+                            <option value="SAVINGS">Savings Account</option>
+                            <option value="CURRENT">Current Account</option>
+                        </select>
+                        <p class="oa-field-hint">Choose either a savings or current account.</p>
+
+                        <label for="initialBalance">Initial Deposit (₹)</label>
+                        <input
+                            type="number"
+                            id="initialBalance"
+                            name="initial_balance"
+                            min="0"
+                            step="0.01"
+                            value="0.00"
+                            required
+                        >
+                        <p class="oa-field-hint">Enter an amount of ₹0 or more, subject to your application's rules.</p>
+
+                        <button type="submit" id="openAccountButton" class="oa-submit">
+                            Open Account
+                            <span aria-hidden="true">→</span>
+                        </button>
+
+                        <p id="accountMessage" role="status" aria-live="polite"></p>
+                    </form>
+                </div>
+            </section>
+
+            <aside class="oa-side-panel">
+                <h3>Choose Your Account</h3>
+                <p>
+                    Review these general account purposes before selecting an
+                    account type in the application form.
+                </p>
+
+                <div class="oa-account-option">
+                    <div class="oa-option-top">
+                        <div class="oa-option-icon" aria-hidden="true">S</div>
+                        <h4>Savings Account</h4>
+                    </div>
+                    <p>
+                        Designed for personal savings and everyday banking
+                        activity, depending on the account's features.
+                    </p>
+                </div>
+
+                <div class="oa-account-option">
+                    <div class="oa-option-top">
+                        <div class="oa-option-icon" aria-hidden="true">C</div>
+                        <h4>Current Account</h4>
+                    </div>
+                    <p>
+                        Commonly used for business transactions and frequent
+                        payments, depending on eligibility and account terms.
+                    </p>
+                </div>
+
+                <div class="oa-side-note">
+                    <strong>Remember:</strong> Account eligibility, minimum
+                    balance rules, and available features depend on the
+                    bank's actual terms and policies.
+                </div>
+            </aside>
+        </div>
+
+        <aside class="oa-info">
+            <div class="oa-info-icon" aria-hidden="true">i</div>
+            <div>
+                <h4>Before opening your account</h4>
+                <p>
+                    Confirm the selected account type and deposit amount before
+                    submitting. This is a portfolio demonstration project,
+                    not a real banking service.
+                </p>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="oa-footer">
+        <p><strong>MyBank Digital Banking</strong></p>
+        <p>Account services for your banking demonstration project.</p>
+        <p>© 2026 MyBank. Portfolio demonstration project.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/open-account.js"></script>
+</body>
+</html>
+```

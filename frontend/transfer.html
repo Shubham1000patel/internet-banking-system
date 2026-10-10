@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transfer Money | MyBank</title>
+    <meta name="description" content="Transfer money securely using your MyBank account.">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .transfer-page {
+            --tp-blue: #10376b;
+            --tp-dark: #08264d;
+            --tp-gold: #e0b85b;
+            --tp-text: #1c2d43;
+            --tp-muted: #718096;
+            --tp-border: #e1e8f1;
+            min-height: 100vh;
+            margin: 0;
+            background: #f3f6fb;
+            color: var(--tp-text);
+            font-family: "Segoe UI", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .transfer-page * {
+            box-sizing: border-box;
+        }
+
+        .transfer-page a {
+            text-decoration: none;
+        }
+
+        .tp-container {
+            width: min(1120px, 92%);
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .transfer-page .tp-topbar {
+            padding: 8px 0;
+            background: #071d3a;
+            color: #dbe6f5;
+            font-size: 12px;
+        }
+
+        .transfer-page .tp-header {
+            background: #fff;
+            border-bottom: 1px solid var(--tp-border);
+        }
+
+        .transfer-page .tp-header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 17px 0;
+        }
+
+        .transfer-page .tp-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--tp-dark);
+        }
+
+        .transfer-page .tp-brand-icon {
+            display: grid;
+            place-items: center;
+            width: 47px;
+            height: 47px;
+            border-radius: 13px;
+            background: linear-gradient(145deg, #174d8d, #09264d);
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .transfer-page .tp-brand h1 {
+            margin: 0;
+            color: var(--tp-dark);
+            font-size: 24px;
+            line-height: 1.2;
+        }
+
+        .transfer-page .tp-brand p {
+            margin: 3px 0 0;
+            color: var(--tp-muted);
+            font-size: 12px;
+        }
+
+        .transfer-page .tp-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 1px solid #d4deeb;
+            border-radius: 8px;
+            background: #fff;
+            color: var(--tp-blue);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .transfer-page .tp-back:hover {
+            background: #edf3fb;
+        }
+
+        .transfer-page .tp-nav {
+            background: var(--tp-blue);
+            border-bottom: 3px solid var(--tp-gold);
+        }
+
+        .transfer-page .tp-nav-inner {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .transfer-page .tp-nav a {
+            padding: 12px 15px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .transfer-page .tp-nav a:hover {
+            background: #ffffff18;
+        }
+
+        /* Main content */
+        .transfer-page .tp-main {
+            padding: 34px 0 58px;
+        }
+
+        .transfer-page .tp-breadcrumb {
+            margin: 0 0 19px;
+            color: var(--tp-muted);
+            font-size: 12px;
+        }
+
+        .transfer-page .tp-breadcrumb a {
+            color: var(--tp-blue);
+            font-weight: 650;
+        }
+
+        .transfer-page .tp-heading {
+            margin-bottom: 25px;
+        }
+
+        .transfer-page .tp-eyebrow {
+            margin: 0 0 7px;
+            color: #9a7425;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .transfer-page .tp-heading h2 {
+            margin: 0;
+            color: var(--tp-dark);
+            font-size: clamp(27px, 3vw, 36px);
+        }
+
+        .transfer-page .tp-heading > p:last-child {
+            margin: 9px 0 0;
+            color: var(--tp-muted);
+            font-size: 14px;
+        }
+
+        .transfer-page .tp-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr);
+            align-items: start;
+            gap: 23px;
+        }
+
+        /* Transfer form */
+        .transfer-page .tp-form-card,
+        .transfer-page .tp-side-card {
+            padding: 28px;
+            border: 1px solid var(--tp-border);
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 8px 26px #102a4e09;
+        }
+
+        .transfer-page .tp-card-heading {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 23px;
+        }
+
+        .transfer-page .tp-heading-icon {
+            display: grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            background: #eaf1fb;
+            color: var(--tp-blue);
+            font-size: 24px;
+        }
+
+        .transfer-page .tp-card-heading h3 {
+            margin: 0;
+            color: var(--tp-dark);
+            font-size: 19px;
+        }
+
+        .transfer-page .tp-card-heading p {
+            margin: 3px 0 0;
+            color: var(--tp-muted);
+            font-size: 12px;
+        }
+
+        .transfer-page #transferForm {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .transfer-page #transferForm label {
+            margin-top: 8px;
+            color: #263b54;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .transfer-page #transferForm input,
+        .transfer-page #transferForm select {
+            width: 100%;
+            min-height: 47px;
+            padding: 12px 14px;
+            border: 1px solid #d0dbe8;
+            border-radius: 8px;
+            background: #fbfcfe;
+            color: var(--tp-text);
+            font: inherit;
+            font-size: 14px;
+        }
+
+        .transfer-page #transferForm input:focus,
+        .transfer-page #transferForm select:focus {
+            outline: none;
+            border-color: #397bc0;
+            box-shadow: 0 0 0 3px #397bc01c;
+        }
+
+        .transfer-page .tp-field-hint {
+            margin: -3px 0 3px;
+            color: var(--tp-muted);
+            font-size: 11px;
+        }
+
+        .transfer-page #transferButton {
+            width: 100%;
+            min-height: 49px;
+            margin-top: 15px;
+            padding: 12px 18px;
+            border: 0;
+            border-radius: 9px;
+            background: var(--tp-blue);
+            color: #fff;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .transfer-page #transferButton:hover:not(:disabled) {
+            transform: translateY(-1px);
+            background: var(--tp-dark);
+        }
+
+        .transfer-page #transferButton:disabled {
+            opacity: .65;
+            cursor: wait;
+        }
+
+        .transfer-page #transferMessage {
+            min-height: 24px;
+            margin: 9px 0 0;
+            overflow-wrap: anywhere;
+            font-size: 13px;
+        }
+
+        .transfer-page .tp-form-security {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin-top: 20px;
+            padding: 13px;
+            border: 1px solid #dcebe3;
+            border-radius: 9px;
+            background: #f2faf5;
+            color: #426754;
+            font-size: 12px;
+        }
+
+        /* Side information */
+        .transfer-page .tp-side-card + .tp-side-card {
+            margin-top: 18px;
+        }
+
+        .transfer-page .tp-side-card h3 {
+            margin: 0 0 17px;
+            color: var(--tp-dark);
+            font-size: 17px;
+        }
+
+        .transfer-page .tp-steps {
+            display: grid;
+            gap: 18px;
+        }
+
+        .transfer-page .tp-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .transfer-page .tp-step-number {
+            display: grid;
+            place-items: center;
+            width: 31px;
+            height: 31px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: #eaf1fb;
+            color: var(--tp-blue);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .transfer-page .tp-step strong {
+            display: block;
+            color: var(--tp-dark);
+            font-size: 13px;
+        }
+
+        .transfer-page .tp-step p {
+            margin: 3px 0 0;
+            color: var(--tp-muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .transfer-page .tp-warning {
+            padding: 17px;
+            border: 1px solid #f0e1bc;
+            border-radius: 11px;
+            background: #fff9e9;
+        }
+
+        .transfer-page .tp-warning h3 {
+            margin: 0 0 7px;
+            color: #775519;
+            font-size: 15px;
+        }
+
+        .transfer-page .tp-warning p {
+            margin: 0;
+            color: #735f37;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        .transfer-page .tp-footer {
+            padding: 21px 0;
+            background: var(--tp-dark);
+            color: #c3d1e5;
+        }
+
+        .transfer-page .tp-footer-inner {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            font-size: 12px;
+        }
+
+        .transfer-page .tp-footer a {
+            color: #fff;
+        }
+
+        .transfer-page a:focus-visible,
+        .transfer-page button:focus-visible,
+        .transfer-page input:focus-visible,
+        .transfer-page select:focus-visible {
+            outline: 3px solid var(--tp-gold);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 800px) {
+            .transfer-page .tp-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .transfer-page .tp-side-column {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: start;
+                gap: 15px;
+            }
+
+            .transfer-page .tp-side-card + .tp-side-card {
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .transfer-page .tp-header-inner {
+                align-items: flex-start;
+            }
+
+            .transfer-page .tp-nav-inner {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .transfer-page .tp-nav a {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+
+            .transfer-page .tp-main {
+                padding-top: 23px;
+            }
+
+            .transfer-page .tp-form-card,
+            .transfer-page .tp-side-card {
+                padding: 20px;
+            }
+
+            .transfer-page .tp-side-column {
+                grid-template-columns: 1fr;
+            }
+
+            .transfer-page .tp-footer-inner {
+                flex-direction: column;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .transfer-page *,
+            .transfer-page *::before,
+            .transfer-page *::after {
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="transfer-page">
+
+    <div class="tp-topbar">
+        <div class="tp-container">
+            MyBank Internet Banking · Secure Money Transfers
+        </div>
+    </div>
+
+    <header class="tp-header">
+        <div class="tp-container tp-header-inner">
+            <a href="dashboard.html" class="tp-brand">
+                <span class="tp-brand-icon" aria-hidden="true">🏦</span>
+                <span>
+                    <h1>MyBank</h1>
+                    <p>INTERNET BANKING PORTAL</p>
+                </span>
+            </a>
+
+            <a href="dashboard.html" class="tp-back">
+                ← Back to Dashboard
+            </a>
+        </div>
+    </header>
+
+    <nav class="tp-nav" aria-label="Banking navigation">
+        <div class="tp-container tp-nav-inner">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="open-account.html">Open Account</a>
+            <a href="transfer.html">Transfer Money</a>
+            <a href="transactions.html">Transactions</a>
+            <a href="beneficiaries.html">Beneficiaries</a>
+            <a href="bill-payments.html">Bill Payments</a>
+            <a href="account-statement.html">Statements</a>
+        </div>
+    </nav>
+
+    <main class="tp-container tp-main">
+
+        <p class="tp-breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            &nbsp; / &nbsp; Money Transfer
+        </p>
+
+        <section class="tp-heading">
+            <p class="tp-eyebrow">PAYMENTS & TRANSFERS</p>
+            <h2>Transfer Money</h2>
+            <p>Send money with care. Review your details before submitting a transfer.</p>
+        </section>
+
+        <div class="tp-layout">
+
+            <!-- Existing form IDs preserved for transfer.js -->
+            <section class="tp-form-card">
+                <div class="tp-card-heading">
+                    <span class="tp-heading-icon" aria-hidden="true">↗</span>
+                    <div>
+                        <h3>Transfer Details</h3>
+                        <p>Enter the sender, recipient and amount.</p>
+                    </div>
+                </div>
+
+                <form id="transferForm">
+                    <label for="fromAccount">From Account</label>
+                    <select id="fromAccount" name="from_account" required>
+                        <option value="">Loading your accounts...</option>
+                    </select>
+                    <p class="tp-field-hint">Select the account you want to transfer money from.</p>
+
+                    <label for="toAccount">Recipient Account Number</label>
+                    <input
+                        type="text"
+                        id="toAccount"
+                        name="to_account"
+                        inputmode="numeric"
+                        pattern="[0-9]{12}"
+                        maxlength="12"
+                        placeholder="Enter 12-digit account number"
+                        autocomplete="off"
+                        required
+                    >
+                    <p class="tp-field-hint">Check the recipient account number carefully.</p>
+
+                    <label for="amount">Transfer Amount (₹)</label>
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="Enter amount"
+                        required
+                    >
+
+                    <label for="description">Description (Optional)</label>
+                    <input
+                        type="text"
+                        id="description"
+                        name="description"
+                        maxlength="100"
+                        placeholder="e.g. Rent payment"
+                    >
+
+                    <button type="submit" id="transferButton">
+                        Transfer Money →
+                    </button>
+
+                    <p id="transferMessage" role="status" aria-live="polite"></p>
+                </form>
+
+                <div class="tp-form-security">
+                    <span aria-hidden="true">🔒</span>
+                    <span>For your safety, verify the recipient and transfer amount before submitting.</span>
+                </div>
+            </section>
+
+            <!-- Helpful information -->
+            <aside class="tp-side-column">
+                <section class="tp-side-card">
+                    <h3>How to Transfer</h3>
+
+                    <div class="tp-steps">
+                        <div class="tp-step">
+                            <span class="tp-step-number">1</span>
+                            <div>
+                                <strong>Select your account</strong>
+                                <p>Choose the account from which funds will be debited.</p>
+                            </div>
+                        </div>
+
+                        <div class="tp-step">
+                            <span class="tp-step-number">2</span>
+                            <div>
+                                <strong>Enter recipient details</strong>
+                                <p>Enter the recipient's 12-digit account number and amount.</p>
+                            </div>
+                        </div>
+
+                        <div class="tp-step">
+                            <span class="tp-step-number">3</span>
+                            <div>
+                                <strong>Review before submitting</strong>
+                                <p>Confirm all details before you submit the transfer.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tp-side-card tp-warning">
+                    <h3>⚠️ Important Safety Tips</h3>
+                    <p>
+                        Never share your password or verification codes.
+                        Confirm the recipient details before making a transfer.
+                        Only submit transactions you recognise and intend to make.
+                    </p>
+                </section>
+            </aside>
+
+        </div>
+    </main>
+
+    <footer class="tp-footer">
+        <div class="tp-container tp-footer-inner">
+            <span>© 2026 MyBank · Educational portfolio project</span>
+            <span>
+                <a href="dashboard.html">Dashboard</a>
+                &nbsp; · &nbsp;
+                <a href="index.html">Home</a>
+            </span>
+        </div>
+    </footer>
+
+    <!-- Keep existing scripts unchanged -->
+    <script src="js/api.js"></script>
+    <script src="js/transfer.js"></script>
+
+</body>
+</html>

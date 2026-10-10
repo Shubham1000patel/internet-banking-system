@@ -1,0 +1,609 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration | MyBank</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .register-page {
+            margin: 0;
+            background: #f3f6fb;
+            color: #26364a;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .register-page * {
+            box-sizing: border-box;
+        }
+
+        .register-page a {
+            text-decoration: none;
+        }
+
+        .register-topbar {
+            padding: 9px 6%;
+            background: #082b55;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .register-header {
+            background: #fff;
+            padding: 20px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e3eaf3;
+        }
+
+        .register-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .register-brand-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 12px;
+            background: #0b376b;
+            color: #f5c451;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .register-brand h1 {
+            color: #0b376b;
+            font-size: 27px;
+            margin: 0 0 5px;
+        }
+
+        .register-brand p {
+            color: #718096;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .register-login-link {
+            display: inline-block;
+            padding: 11px 16px;
+            background: #edf3fa;
+            color: #0b376b;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .register-login-link:hover {
+            background: #dce8f7;
+        }
+
+        .register-nav {
+            background: #104b89;
+            padding: 0 6%;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .register-nav a {
+            color: #fff;
+            padding: 14px 16px;
+            display: inline-block;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .register-nav a:hover {
+            background: #082b55;
+        }
+
+        .register-main {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto 50px;
+        }
+
+        .register-breadcrumb {
+            margin-bottom: 12px;
+            color: #7b8798;
+            font-size: 13px;
+        }
+
+        .register-breadcrumb a {
+            color: #14559a;
+        }
+
+        .register-intro {
+            margin-bottom: 24px;
+        }
+
+        .register-intro h2 {
+            color: #0b376b;
+            font-size: 29px;
+            margin: 0 0 8px;
+        }
+
+        .register-intro p {
+            color: #68778c;
+            margin: 0;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .register-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.8fr);
+            align-items: start;
+            gap: 24px;
+        }
+
+        .register-card {
+            min-width: 0;
+            padding: 28px;
+            background: #fff;
+            border: 1px solid #e3eaf3;
+            border-radius: 13px;
+            box-shadow: 0 5px 20px rgba(15, 44, 80, 0.045);
+        }
+
+        .register-card-heading {
+            padding-bottom: 18px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #e9eef5;
+        }
+
+        .register-card-heading h3 {
+            color: #0b376b;
+            margin: 0 0 7px;
+            font-size: 21px;
+        }
+
+        .register-card-heading p {
+            color: #778499;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .register-form label {
+            display: block;
+            color: #35445a;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 17px 0 8px;
+        }
+
+        .register-form input,
+        .register-form textarea {
+            display: block;
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d6dfeb;
+            border-radius: 7px;
+            background: #fff;
+            color: #26364a;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .register-form input {
+            min-height: 45px;
+        }
+
+        .register-form textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .register-form input:focus,
+        .register-form textarea:focus {
+            outline: none;
+            border-color: #1a65ad;
+            box-shadow: 0 0 0 3px rgba(26, 101, 173, 0.12);
+        }
+
+        .register-form input::placeholder,
+        .register-form textarea::placeholder {
+            color: #9aa6b5;
+        }
+
+        .register-submit {
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 7px;
+            background: #104b89;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .register-submit:hover {
+            background: #082b55;
+        }
+
+        .register-submit:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        #registerMessage {
+            margin: 14px 0 0;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .register-existing {
+            text-align: center;
+            margin: 22px 0 0;
+            color: #68778c;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .register-existing a {
+            color: #14559a;
+            font-weight: bold;
+        }
+
+        .register-existing a:hover {
+            text-decoration: underline;
+        }
+
+        .register-benefits {
+            background: #0b376b;
+            color: #fff;
+            border-radius: 13px;
+            padding: 26px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .register-benefits::before {
+            content: "";
+            display: block;
+            height: 4px;
+            width: 55px;
+            border-radius: 5px;
+            background: #f5c451;
+            margin-bottom: 22px;
+        }
+
+        .register-benefits h3 {
+            margin: 0 0 10px;
+            font-size: 22px;
+            line-height: 1.4;
+        }
+
+        .register-benefits > p {
+            color: #d7e4f4;
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 0 0 22px;
+        }
+
+        .register-benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .register-benefit-icon {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            background: rgba(245, 196, 81, 0.15);
+            color: #f5c451;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .register-benefit-item strong {
+            display: block;
+            margin: 2px 0 5px;
+            font-size: 14px;
+        }
+
+        .register-benefit-item span {
+            display: block;
+            color: #d7e4f4;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .register-privacy-note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f6fc;
+            border: 1px solid #e1eaf5;
+            border-radius: 8px;
+            color: #5d6d82;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .register-footer {
+            background: #082b55;
+            color: #dce7f5;
+            padding: 25px 6%;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .register-footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 800px) {
+            .register-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .register-benefits {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .register-topbar {
+                padding: 10px 4%;
+            }
+
+            .register-header {
+                padding: 17px 4%;
+            }
+
+            .register-brand h1 {
+                font-size: 23px;
+            }
+
+            .register-nav {
+                padding: 0 2%;
+            }
+
+            .register-nav a {
+                padding: 12px 10px;
+                font-size: 12px;
+            }
+
+            .register-main {
+                width: 92%;
+                margin-top: 24px;
+            }
+
+            .register-intro h2 {
+                font-size: 25px;
+            }
+
+            .register-card,
+            .register-benefits {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body class="register-page">
+    <div class="register-topbar">
+        <span>Welcome to MyBank Internet Banking</span>
+        <span>Customer Registration</span>
+    </div>
+
+    <header class="register-header">
+        <div class="register-brand">
+            <div class="register-brand-icon" aria-hidden="true">₹</div>
+            <div>
+                <h1>MyBank</h1>
+                <p>Simple. Secure. Convenient.</p>
+            </div>
+        </div>
+
+        <a class="register-login-link" href="index.html">
+            ← Back to Login
+        </a>
+    </header>
+
+    <nav class="register-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="index.html">Customer Login</a>
+        <a href="register.html" aria-current="page">Register</a>
+    </nav>
+
+    <main class="register-main">
+        <div class="register-breadcrumb">
+            <a href="index.html">Home</a>
+            <span> / Customer Registration</span>
+        </div>
+
+        <section class="register-intro">
+            <h2>Become a MyBank Customer</h2>
+            <p>
+                Create your customer profile to get started with your
+                Internet Banking System.
+            </p>
+        </section>
+
+        <div class="register-layout">
+            <section class="register-card">
+                <div class="register-card-heading">
+                    <h3>Create Your Banking Account</h3>
+                    <p>Enter your details accurately in the form below.</p>
+                </div>
+
+                <form id="registerForm" class="register-form">
+                    <label for="name">Full Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        minlength="2"
+                        maxlength="100"
+                        autocomplete="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        autocomplete="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                    <label for="phone">Phone Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        maxlength="15"
+                        autocomplete="tel"
+                        placeholder="Enter your phone number"
+                        required
+                    >
+
+                    <label for="address">Address</label>
+                    <textarea
+                        id="address"
+                        name="address"
+                        rows="3"
+                        maxlength="300"
+                        autocomplete="street-address"
+                        placeholder="Enter your address"
+                        required
+                    ></textarea>
+
+                    <label for="date_of_birth">Date of Birth</label>
+                    <input
+                        type="date"
+                        id="date_of_birth"
+                        name="date_of_birth"
+                        autocomplete="bday"
+                        required
+                    >
+
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        minlength="8"
+                        autocomplete="new-password"
+                        placeholder="Create a password"
+                        required
+                    >
+
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        minlength="8"
+                        autocomplete="new-password"
+                        placeholder="Re-enter your password"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        id="registerButton"
+                        class="register-submit"
+                    >
+                        Create Customer Account
+                    </button>
+
+                    <p
+                        id="registerMessage"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+                </form>
+
+                <p class="register-existing">
+                    Already registered?
+                    <a href="index.html">Log in here</a>.
+                </p>
+            </section>
+
+            <aside>
+                <section class="register-benefits">
+                    <h3>Your banking journey starts here.</h3>
+                    <p>
+                        Set up your customer profile to begin using the
+                        features available in this banking application.
+                    </p>
+
+                    <div class="register-benefit-item">
+                        <div class="register-benefit-icon" aria-hidden="true">✓</div>
+                        <div>
+                            <strong>Simple Registration</strong>
+                            <span>Enter your details through one organized form.</span>
+                        </div>
+                    </div>
+
+                    <div class="register-benefit-item">
+                        <div class="register-benefit-icon" aria-hidden="true">↗</div>
+                        <div>
+                            <strong>Convenient Access</strong>
+                            <span>Use your registered credentials to sign in.</span>
+                        </div>
+                    </div>
+
+                    <div class="register-benefit-item">
+                        <div class="register-benefit-icon" aria-hidden="true">◆</div>
+                        <div>
+                            <strong>Account Management</strong>
+                            <span>Explore the account and transaction features after registration.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="register-privacy-note">
+                    <strong>Privacy reminder</strong><br>
+                    Never share your password with anyone. For this portfolio
+                    project, use test information rather than real banking
+                    credentials or sensitive personal details.
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="register-footer">
+        <p><strong>MyBank Internet Banking</strong></p>
+        <p>Customer registration and account access demonstration.</p>
+        <p>For portfolio and educational use.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/register.js"></script>
+</body>
+</html>
+```

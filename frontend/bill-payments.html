@@ -1,0 +1,761 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Payments | MyBank</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .bill-page {
+            min-height: 100vh;
+            background: #f3f6fb;
+            color: #172b46;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .bill-page * {
+            box-sizing: border-box;
+        }
+
+        .bill-topbar {
+            padding: 9px 5%;
+            background: #08294f;
+            color: #e5edf8;
+            font-size: 12px;
+            letter-spacing: .3px;
+        }
+
+        .bill-header {
+            padding: 22px 5%;
+            background: #fff;
+            border-bottom: 1px solid #e0e7f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .bill-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .bill-brand-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #123b73;
+            color: #fff;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .bill-brand h1 {
+            margin: 0;
+            color: #123b73;
+            font-size: 25px;
+            line-height: 1.2;
+        }
+
+        .bill-brand p {
+            margin: 5px 0 0;
+            color: #6b7789;
+            font-size: 13px;
+        }
+
+        .bill-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            color: #123b73;
+            background: #fff;
+            border: 1px solid #cbd7e7;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 650;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .bill-back:hover {
+            background: #edf3fb;
+            color: #09264b;
+        }
+
+        .bill-nav {
+            padding: 0 5%;
+            background: #123b73;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .bill-nav a {
+            display: inline-block;
+            padding: 14px 15px;
+            color: #e8eff9;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+        }
+
+        .bill-nav a:hover,
+        .bill-nav a.active {
+            color: #fff;
+            background: rgba(255,255,255,.08);
+            border-bottom-color: #d7ad55;
+        }
+
+        .bill-main {
+            width: min(1200px, 92%);
+            margin: 34px auto 55px;
+        }
+
+        .bill-breadcrumb {
+            margin-bottom: 22px;
+            color: #738198;
+            font-size: 13px;
+        }
+
+        .bill-breadcrumb a {
+            color: #245b99;
+            text-decoration: none;
+        }
+
+        .bill-page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 26px;
+        }
+
+        .bill-page-heading h2 {
+            margin: 0;
+            color: #102e55;
+            font-size: clamp(25px, 3vw, 32px);
+            letter-spacing: -.5px;
+        }
+
+        .bill-page-heading p {
+            margin: 8px 0 0;
+            color: #6b7789;
+            font-size: 14px;
+        }
+
+        .bill-secure-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 13px;
+            border: 1px solid #cce9dc;
+            border-radius: 30px;
+            background: #f0faf5;
+            color: #16734e;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .bill-shortcuts {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 13px;
+            margin-bottom: 26px;
+        }
+
+        .bill-shortcut {
+            min-width: 0;
+            padding: 17px 10px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #e0e7f0;
+            border-radius: 13px;
+            box-shadow: 0 4px 16px rgba(16,42,78,.035);
+        }
+
+        .bill-shortcut-icon {
+            width: 42px;
+            height: 42px;
+            margin: 0 auto 10px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #eaf2fc;
+            color: #164b83;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .bill-shortcut strong {
+            display: block;
+            color: #24405f;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .bill-layout {
+            display: grid;
+            grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+            align-items: start;
+            gap: 24px;
+        }
+
+        .bill-panel {
+            min-width: 0;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e0e7f0;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(16,42,78,.06);
+        }
+
+        .bill-panel-heading {
+            padding: 23px 24px;
+            border-bottom: 1px solid #e7edf5;
+        }
+
+        .bill-heading-row {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .bill-heading-icon {
+            flex: 0 0 43px;
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #eaf2fc;
+            color: #164b83;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .bill-panel-heading h3 {
+            margin: 0;
+            color: #12345c;
+            font-size: 19px;
+        }
+
+        .bill-panel-heading p {
+            margin: 5px 0 0;
+            color: #7b8798;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .bill-form-body {
+            padding: 24px;
+        }
+
+        .bill-form-body form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bill-form-body label {
+            margin-top: 8px;
+            color: #334761;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .bill-form-body input,
+        .bill-form-body select {
+            width: 100%;
+            min-height: 47px;
+            padding: 12px 14px;
+            color: #203651;
+            background: #fff;
+            border: 1px solid #ccd7e5;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .bill-form-body input::placeholder {
+            color: #9aa6b7;
+        }
+
+        .bill-form-body input:focus,
+        .bill-form-body select:focus {
+            outline: none;
+            border-color: #3479bf;
+            box-shadow: 0 0 0 3px rgba(52,121,191,.12);
+        }
+
+        .bill-amount-note {
+            margin: 0;
+            color: #8490a1;
+            font-size: 12px;
+        }
+
+        .bill-submit {
+            min-height: 47px;
+            margin-top: 17px;
+            padding: 12px 18px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            background: #123b73;
+            border: 1px solid #123b73;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .bill-submit:hover:not(:disabled) {
+            background: #09264b;
+            transform: translateY(-1px);
+        }
+
+        .bill-submit:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        #billPaymentMessage {
+            min-height: 22px;
+            margin: 10px 0 0;
+            color: #52647a;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .bill-history-header {
+            padding: 22px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e7edf5;
+        }
+
+        .bill-history-header h3 {
+            margin: 0;
+            color: #12345c;
+            font-size: 19px;
+        }
+
+        .bill-history-header p {
+            margin: 5px 0 0;
+            color: #7b8798;
+            font-size: 13px;
+        }
+
+        .bill-refresh {
+            min-height: 39px;
+            padding: 9px 13px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #123b73;
+            background: #fff;
+            border: 1px solid #cbd7e7;
+            border-radius: 8px;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .bill-refresh:hover {
+            background: #edf3fb;
+        }
+
+        .bill-table-wrapper {
+            margin: 22px 20px 24px;
+            overflow-x: auto;
+            border: 1px solid #e1e8f1;
+            border-radius: 11px;
+        }
+
+        .bill-table {
+            width: 100%;
+            min-width: 590px;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        .bill-table thead th {
+            padding: 14px 13px;
+            background: #123b73;
+            color: #fff;
+            text-align: left;
+            white-space: nowrap;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            text-transform: uppercase;
+        }
+
+        .bill-table tbody td {
+            padding: 14px 13px;
+            color: #3c4e65;
+            border-bottom: 1px solid #eaf0f6;
+            text-align: left;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .bill-table tbody tr:nth-child(even) {
+            background: #f9fbfe;
+        }
+
+        .bill-table tbody tr:hover {
+            background: #f0f5fc;
+        }
+
+        .bill-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .bill-table tbody td:last-child {
+            white-space: nowrap;
+        }
+
+        .bill-empty {
+            padding: 35px 16px !important;
+            color: #758399 !important;
+            text-align: center !important;
+        }
+
+        .bill-info {
+            margin-top: 23px;
+            padding: 17px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #eef5fd;
+            border: 1px solid #d8e7f8;
+            border-radius: 11px;
+        }
+
+        .bill-info-icon {
+            flex: 0 0 30px;
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #dceafb;
+            color: #164b83;
+            font-weight: 800;
+        }
+
+        .bill-info h4 {
+            margin: 0 0 4px;
+            color: #174574;
+            font-size: 13px;
+        }
+
+        .bill-info p {
+            margin: 0;
+            color: #58708c;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .bill-footer {
+            padding: 28px 5%;
+            background: #08294f;
+            color: #d5e1f1;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .bill-footer p {
+            margin: 5px 0;
+            color: #d5e1f1;
+        }
+
+        @media (max-width: 950px) {
+            .bill-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .bill-topbar {
+                padding: 9px 4%;
+            }
+
+            .bill-header {
+                padding: 18px 4%;
+            }
+
+            .bill-brand h1 {
+                font-size: 22px;
+            }
+
+            .bill-nav {
+                padding: 0 3%;
+                gap: 0;
+            }
+
+            .bill-nav a {
+                padding: 12px 10px;
+                font-size: 12px;
+            }
+
+            .bill-main {
+                width: 94%;
+                margin-top: 24px;
+            }
+
+            .bill-shortcuts {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 9px;
+            }
+
+            .bill-shortcut {
+                padding: 14px 7px;
+            }
+
+            .bill-panel-heading,
+            .bill-form-body,
+            .bill-history-header {
+                padding: 19px;
+            }
+
+            .bill-table-wrapper {
+                margin: 18px 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bill-back,
+            .bill-submit,
+            .bill-refresh {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="bill-page">
+    <div class="bill-topbar">
+        MYBANK DIGITAL BANKING &nbsp; | &nbsp; BILL PAYMENT SERVICES
+    </div>
+
+    <header class="bill-header">
+        <div class="bill-brand">
+            <div class="bill-brand-icon" aria-hidden="true">M</div>
+            <div>
+                <h1>MyBank</h1>
+                <p>Bill Payments</p>
+            </div>
+        </div>
+
+        <a class="bill-back" href="dashboard.html">
+            <span aria-hidden="true">←</span>
+            Back to Dashboard
+        </a>
+    </header>
+
+    <nav class="bill-nav" aria-label="Main navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="open-account.html">My Accounts</a>
+        <a href="transfer.html">Money Transfer</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="beneficiaries.html">Beneficiaries</a>
+        <a href="bill-payments.html" class="active" aria-current="page">Bill Payments</a>
+        <a href="account-statement.html">Statements</a>
+    </nav>
+
+    <main class="bill-main">
+        <div class="bill-breadcrumb">
+            <a href="dashboard.html">Dashboard</a>
+            &nbsp; / &nbsp; Bill Payments
+        </div>
+
+        <div class="bill-page-heading">
+            <div>
+                <h2>Bill Payments</h2>
+                <p>Manage everyday payments from your bank account.</p>
+            </div>
+
+            <div class="bill-secure-label">
+                <span aria-hidden="true">●</span>
+                Secure Banking
+            </div>
+        </div>
+
+        <section class="bill-shortcuts" aria-label="Available bill categories">
+            <div class="bill-shortcut">
+                <div class="bill-shortcut-icon" aria-hidden="true">ϟ</div>
+                <strong>Electricity</strong>
+            </div>
+
+            <div class="bill-shortcut">
+                <div class="bill-shortcut-icon" aria-hidden="true">▣</div>
+                <strong>Mobile Recharge</strong>
+            </div>
+
+            <div class="bill-shortcut">
+                <div class="bill-shortcut-icon" aria-hidden="true">≈</div>
+                <strong>Water</strong>
+            </div>
+
+            <div class="bill-shortcut">
+                <div class="bill-shortcut-icon" aria-hidden="true">♨</div>
+                <strong>Gas</strong>
+            </div>
+
+            <div class="bill-shortcut">
+                <div class="bill-shortcut-icon" aria-hidden="true">⌁</div>
+                <strong>Internet</strong>
+            </div>
+        </section>
+
+        <div class="bill-layout">
+            <section class="bill-panel" aria-labelledby="payBillTitle">
+                <div class="bill-panel-heading">
+                    <div class="bill-heading-row">
+                        <div class="bill-heading-icon" aria-hidden="true">₹</div>
+                        <div>
+                            <h3 id="payBillTitle">Pay a Bill</h3>
+                            <p>Enter your bill information to continue.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bill-form-body">
+                    <form id="billPaymentForm">
+                        <label for="billAccount">Pay From Account</label>
+                        <select id="billAccount" required>
+                            <option value="">Loading accounts...</option>
+                        </select>
+
+                        <label for="billType">Bill Type</label>
+                        <select id="billType" required>
+                            <option value="">Select bill type</option>
+                            <option value="ELECTRICITY">Electricity</option>
+                            <option value="MOBILE">Mobile Recharge</option>
+                            <option value="WATER">Water</option>
+                            <option value="GAS">Gas</option>
+                            <option value="INTERNET">Internet</option>
+                        </select>
+
+                        <label for="consumerNumber">Consumer / Reference Number</label>
+                        <input
+                            type="text"
+                            id="consumerNumber"
+                            maxlength="50"
+                            placeholder="Enter consumer or reference number"
+                            autocomplete="off"
+                            required
+                        />
+
+                        <label for="providerName">Provider Name</label>
+                        <input
+                            type="text"
+                            id="providerName"
+                            maxlength="100"
+                            placeholder="e.g. MSEB, Airtel, or Jio"
+                            required
+                        />
+
+                        <label for="billAmount">Amount (₹)</label>
+                        <input
+                            type="number"
+                            id="billAmount"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Enter amount"
+                            required
+                        />
+                        <p class="bill-amount-note">Enter the amount shown on your bill.</p>
+
+                        <button type="submit" id="payBillButton" class="bill-submit">
+                            Pay Bill
+                            <span aria-hidden="true">→</span>
+                        </button>
+
+                        <p id="billPaymentMessage" role="status" aria-live="polite"></p>
+                    </form>
+                </div>
+            </section>
+
+            <section class="bill-panel" aria-labelledby="paymentHistoryTitle">
+                <div class="bill-history-header">
+                    <div>
+                        <h3 id="paymentHistoryTitle">Payment History</h3>
+                        <p>Review your previous bill payments.</p>
+                    </div>
+
+                    <button type="button" id="refreshBillPayments" class="bill-refresh">
+                        <span aria-hidden="true">↻</span>
+                        Refresh
+                    </button>
+                </div>
+
+                <div class="bill-table-wrapper">
+                    <table class="bill-table transaction-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Reference</th>
+                                <th scope="col">Bill Type</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="billPaymentsBody">
+                            <tr>
+                                <td colspan="5" class="bill-empty">Loading payment history...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <aside class="bill-info">
+            <div class="bill-info-icon" aria-hidden="true">i</div>
+            <div>
+                <h4>Before you make a payment</h4>
+                <p>
+                    Verify the provider, consumer number, and amount before submitting.
+                    Review the payment status after submission. This portfolio project
+                    demonstrates bill-payment workflows and is not a real banking service.
+                </p>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="bill-footer">
+        <p><strong>MyBank Digital Banking</strong></p>
+        <p>Secure access to your banking information.</p>
+        <p>© 2026 MyBank. Portfolio demonstration project.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/bill-payments.js"></script>
+</body>
+</html>
+```

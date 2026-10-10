@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Internet Banking</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        :root {
+            --navy: #071a35;
+            --blue: #123e70;
+            --gold: #d4a63b;
+            --background: #f3f6fb;
+            --text: #1e293b;
+            --muted: #64748b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-header {
+            background: var(--navy);
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .admin-header p {
+            margin: 6px 0 0;
+            color: #dbe6f4;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .header-actions button {
+            border: 1px solid var(--gold);
+            border-radius: 7px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #refreshDashboard {
+            background: transparent;
+            color: white;
+        }
+
+        #adminLogoutButton {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .admin-container {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 28px 20px 50px;
+        }
+
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .welcome-section h2 {
+            margin: 0 0 7px;
+            color: var(--navy);
+        }
+
+        .welcome-section p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .admin-role {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #fff0c7;
+            color: #795500;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid #e1e8f0;
+            box-shadow: 0 4px 15px rgba(7, 26, 53, 0.04);
+        }
+
+        .stat-card .stat-label {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .stat-card h3 {
+            margin: 13px 0 0;
+            color: var(--blue);
+            font-size: 28px;
+            overflow-wrap: anywhere;
+        }
+
+        .section-title {
+            color: var(--navy);
+            margin: 0 0 16px;
+            font-size: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .feature-card h3 {
+            color: var(--blue);
+            margin: 0 0 10px;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 45px;
+        }
+
+        .feature-card a {
+            display: inline-block;
+            color: var(--blue);
+            font-weight: bold;
+            text-decoration: none;
+            margin-top: 8px;
+        }
+
+        .feature-card a:hover {
+            color: #9a710e;
+            text-decoration: underline;
+        }
+
+        .notice {
+            background: white;
+            padding: 16px;
+            border-radius: 9px;
+            border-left: 4px solid var(--gold);
+            margin-bottom: 24px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        #dashboardMessage {
+            margin: 0 0 20px;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            padding: 24px 12px;
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 560px) {
+            .stats-grid, .feature-grid { grid-template-columns: 1fr; }
+            .admin-container { padding: 20px 14px 35px; }
+            .admin-header { padding: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <div>
+            <h1>Internet Banking | Admin Portal</h1>
+            <p>Banking operations and management</p>
+        </div>
+
+        <div class="header-actions">
+            <button type="button" id="refreshDashboard">Refresh</button>
+            <button type="button" id="adminLogoutButton">Logout</button>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <section class="welcome-section">
+            <div>
+                <h2 id="adminWelcome">Welcome, Administrator</h2>
+                <p id="adminEmailDisplay">Loading admin profile...</p>
+            </div>
+            <span class="admin-role" id="adminRoleDisplay">ADMIN</span>
+        </section>
+
+        <div id="dashboardMessage" role="status" aria-live="polite"></div>
+
+        <div class="notice">
+            <strong>Admin workspace:</strong>
+            Review banking activity and manage customer and account records.
+            Only use status controls for authorized administrative actions.
+        </div>
+
+        <section aria-labelledby="overviewTitle">
+            <h2 class="section-title" id="overviewTitle">Dashboard Overview</h2>
+
+            <div class="stats-grid">
+                <article class="stat-card">
+                    <div class="stat-label">Total Customers</div>
+                    <h3 id="totalCustomers">—</h3>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-label">Total Accounts</div>
+                    <h3 id="totalAccounts">—</h3>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-label">Total Transactions</div>
+                    <h3 id="totalTransactions">—</h3>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-label">Financial Summary</div>
+                    <h3 id="financialSummary">—</h3>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="managementTitle">
+            <h2 class="section-title" id="managementTitle">Administration</h2>
+
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <h3>Customer Management</h3>
+                    <p>Review registered customers and their account status.</p>
+                    <a href="admin-customers.html">Manage Customers →</a>
+                </article>
+
+                <article class="feature-card">
+                    <h3>Account Management</h3>
+                    <p>Review bank accounts and authorized status changes.</p>
+                    <a href="admin-accounts.html">Manage Accounts →</a>
+                </article>
+
+                <article class="feature-card">
+                    <h3>Transaction Records</h3>
+                    <p>Review transaction activity and search records.</p>
+                    <a href="admin-transactions.html">View Transactions →</a>
+                </article>
+
+                <article class="feature-card">
+                    <h3>Financial Reports</h3>
+                    <p>Review the financial summary provided by the backend.</p>
+                    <a href="admin-reports.html">View Reports →</a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="admin-footer">
+        Internet Banking System · Administrative Access
+    </footer>
+
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
+
